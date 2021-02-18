@@ -1,0 +1,697 @@
+﻿<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
+
+    <title>Charakterauswahl</title>
+</head>
+
+<body>
+    <div id="genderselectBox" class="box">
+        <img src="../utils/img/logo.png">
+        <p class="title">AMESTRIS ROLEPLAY</p>
+        <hr>
+        <p class="description">Wähle dein Geschlecht und die Eigenschaft deines Charakters.<br>Jeder Zweig (legal / illegal) bringt Vor- und Nachteile für deine zukünftige Charakterlaufbahn. Der Wechsel im Spielgeschehen von Illegal zu Legal wird nicht einfach sein, entscheide
+            also bewusst!</p>
+        <hr>
+        <ul class="list-group">
+            <li class="list-group-item" onclick="selectCharCreatorGender(0);">
+                <img src="../utils/img/male.png"><br>
+                <p>MÄNNLICH</p>
+            </li>
+            <li class="list-group-item" onclick="selectCharCreatorGender(1);">
+                <img src="../utils/img/female.png"><br>
+                <p>WEIBLICH</p>
+            </li>
+        </ul>
+    </div>
+
+    <div id="loadingScreen">
+        <p style="color: #fff; font-weight: bold; font-family: PEL; font-size: 0.85vw; margin-bottom: 0;">Lade Spielstand und Spielerinformationen...</p>
+        <img src="../utils/img/loading.svg" class="img-fluid mx-auto d-block" style="max-width: 100%; height: auto">
+    </div>
+
+    <!-- <div id="charcreatorMainBox" style="display: block !important; opacity: 1 !important;"> -->
+    <div id="charcreatorMainBox">
+        <div id="charcreatorCategoryBox">
+            <p>WÄHLE EINE KATEGORIE</p>
+            <hr>
+            <ul class="list-group">
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'hair');">
+                    <img src="../utils/img/hair.png">
+                    <p>HAARE</p>
+                </li>
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'chesthair');">
+                    <img src="../utils/img/body-parts.png">
+                    <p>BRUSTHAARE</p>
+                </li>
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'eye');">
+                    <img src="../utils/img/eye.png">
+                    <p>AUGEN</p>
+                </li>
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'parent');">
+                    <img src="../utils/img/family.png">
+                    <p>ABSTAMMUNG</p>
+                </li>
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'cheek');">
+                    <img src="../utils/img/cheek.png">
+                    <p>WANGEN</p>
+                </li>
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'blemishes');">
+                    <img src="../utils/img/skin.png">
+                    <p>MERKMALE</p>
+                </li>
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'lips');">
+                    <img src="../utils/img/lips.png">
+                    <p>LIPPEN</p>
+                </li>
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'chin');">
+                    <img src="../utils/img/chin.png">
+                    <p>KINN</p>
+                </li>
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'allergy');">
+                    <img src="../utils/img/allergy.png">
+                    <p>KIEFER</p>
+                </li>
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'neck');">
+                    <img src="../utils/img/neck.png">
+                    <p>NACKEN</p>
+                </li>
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'nose');">
+                    <img src="../utils/img/piercing.png">
+                    <p>NASE</p>
+                </li>
+                <li class="list-group-item CCCItem" onclick="selectCharCreatorCategory(this, 'info');">
+                    <img src="../utils/img/business-card-of-a-man-with-contact-info.png">
+                    <p>INFORMATIONEN</p>
+                </li>
+            </ul>
+        </div>
+        <div id="charcreator-neckBox" class="creatorBox hidden">
+            <p>VERÄNDERE DEINEN NACKEN</p>
+            <hr>
+            <div class="container" style="border-bottom: 0px;">
+                <p>Breite</p>
+                <form oninput="numerisch.value=auswertung.value">
+                    <input id="neckWidth" oninput="ChangeFace(14);" type="range" class="range" name="auswertung" min="-1" step="0.1" max="1" value="0"><output name="numerisch">0</output>
+                </form>
+            </div>
+        </div>
+        <div id="charcreator-noseBox" class="creatorBox hidden">
+            <p>VERÄNDERE DEINE NASE</p>
+            <hr>
+            <div class="container">
+                <p>Breite</p>
+                <form oninput="numerisch.value=auswertung.value">
+                    <input id="noseWidth" oninput="ChangeFace(20);" type="range" class="range" name="auswertung" min="-1" step="0.1" max="1" value="0"><output name="numerisch">0</output>
+                </form>
+            </div>
+            <div class="container">
+                <p>Höhe</p>
+                <form oninput="numerisch.value=auswertung.value">
+                    <input id="noseHeight" oninput="ChangeFace(16);" type="range" class="range" name="auswertung" min="-1" step="0.1" max="1" value="0"><output name="numerisch">0</output>
+                </form>
+            </div>
+            <div class="container">
+                <p>Länge</p>
+                <form oninput="numerisch.value=auswertung.value">
+                    <input id="noseLength" oninput="ChangeFace(17);" type="range" class="range" name="auswertung" min="-1" step="0.1" max="1" value="0"><output name="numerisch">0</output>
+                </form>
+            </div>
+            <div class="container">
+                <p>Rücken</p>
+                <form oninput="numerisch.value=auswertung.value">
+                    <input id="noseBridge" oninput="ChangeFace(18);" type="range" class="range" name="auswertung" min="-1" step="0.1" max="1" value="0"><output name="numerisch">0</output>
+                </form>
+            </div>
+            <div class="container">
+                <p>Verschiebung</p>
+                <form oninput="numerisch.value=auswertung.value">
+                    <input id="noseShift" oninput="ChangeFace(19);" type="range" class="range" name="auswertung" min="-1" step="0.1" max="1" value="0"><output name="numerisch">0</output>
+                </form>
+            </div>
+        </div>
+        <div id="charcreator-infoBox" class="creatorBox hidden">
+            <p>STELLE DIE LETZTEN DINGE FERTIG...</p>
+            <p id="charcreatorerror">Ein Fehler ist aufgetreten.</p>
+            <hr>
+            <div class="container" style="border-bottom: 0px;">
+                <p style="text-align: center;">Geburtsdatum</p>
+                <input id="birthday" maxlength="10" name="birthday" spellcheck="false" type="text" placeholder="dd.mm.yyyy">
+            </div>
+            <hr>
+            <p>LEGAL ODER ILLEGAL? ENTSCHEIDE BEWUSST...</p>
+            <ul style="display: inline-block !important; margin-top: 10px; margin-bottom: 10px;" class="list-group">
+                <li class="list-group-item CrimeFlagItem" onclick="selectCharCreatorCrimeFlag(this, false);">
+                    <img src="../utils/img/sheet.png">
+                    <br>
+                    <p>LEGAL</p>
+                </li>
+                <li class="list-group-item CrimeFlagItem" onclick="selectCharCreatorCrimeFlag(this, true);">
+                    <img src="../utils/img/syringe.png">
+                    <br>
+                    <p>ILLEGAL</p>
+                </li>
+            </ul>
+            <hr>
+            <button onclick="finishCharCreator()" type="button" class="btn btn-sm btn-success">ABSCHLIEßEN</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="../utils/bootstrap.min.js"></script>
+    <script src="../utils/anime.min.js"></script>
+    <script src="https://kit.fontawesome.com/640357ffb4.js"></script>
+</body>
+
+<script>
+    let maxAvailableChars = 2,
+        $gender = null,
+        $isCrimeFlagged = null;
+    var headoverlaysdata = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0];
+    var headoverlaysopacitydata = [1, 10, 10, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0];
+    var headoverlayscolordata = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var headoverlaysarray = [headoverlaysdata, headoverlaysopacitydata, headoverlayscolordata];
+    var facefeaturesdata = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var headblendsdata = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var fatherVar = document.getElementById("FatherVariation"),
+        motherVar = document.getElementById("MotherVariation"),
+        fatherSkinVar = document.getElementById("FatherSkin"),
+        motherSkinVar = document.getElementById("MotherSkin");
+
+    let colors = '[{"r":28,"b":33,"g":31},{"r":39,"b":44,"g":42},{"r":49,"b":44,"g":46},{"r":53,"b":28,"g":38},{"r":75,"b":31,"g":50},{"r":92,"b":36,"g":59},{"r":109,"b":53,"g":76},{"r":107,"b":59,"g":80},{"r":118,"b":69,"g":92},{"r":127,"b":78,"g":104},{"r":153,"b":93,"g":129},{"r":167,"b":105,"g":147},{"r":175,"b":112,"g":156},{"r":187,"b":99,"g":160},{"r":214,"b":123,"g":185},{"r":218,"b":142,"g":195},{"r":159,"b":89,"g":127},{"r":132,"b":57,"g":80},{"r":104,"b":31,"g":43},{"r":97,"b":12,"g":18},{"r":100,"b":10,"g":15},{"r":124,"b":15,"g":20},{"r":160,"b":25,"g":46},{"r":182,"b":40,"g":75},{"r":162,"b":47,"g":80},{"r":170,"b":43,"g":78},{"r":98,"b":98,"g":98},{"r":128,"b":128,"g":128},{"r":170,"b":170,"g":170},{"r":197,"b":197,"g":197},{"r":70,"b":85,"g":57},{"r":90,"b":107,"g":63},{"r":118,"b":118,"g":60},{"r":237,"b":227,"g":116},{"r":235,"b":147,"g":75},{"r":242,"b":188,"g":153},{"r":4,"b":158,"g":149},{"r":2,"b":134,"g":95},{"r":2,"b":116,"g":57},{"r":63,"b":106,"g":161},{"r":33,"b":97,"g":124},{"r":24,"b":85,"g":92},{"r":182,"b":52,"g":192},{"r":112,"b":11,"g":169},{"r":67,"b":19,"g":157},{"r":220,"b":87,"g":184},{"r":229,"b":3,"g":177},{"r":230,"b":2,"g":145},{"r":242,"b":49,"g":136},{"r":251,"b":87,"g":128},{"r":226,"b":88,"g":139},{"r":209,"b":60,"g":89},{"r":206,"b":32,"g":49},{"r":173,"b":3,"g":9},{"r":136,"b":2,"g":3},{"r":31,"b":20,"g":24},{"r":41,"b":25,"g":31},{"r":46,"b":27,"g":34},{"r":55,"b":30,"g":41},{"r":46,"b":24,"g":34},{"r":35,"b":21,"g":27},{"r":2,"b":2,"g":2},{"r":112,"b":102,"g":108},{"r":157,"b":80,"g":122}]';
+    let lipstickColors = '[{"r":153,"g":37,"b":50},{"r":200,"g":57,"b":93},{"r":189,"g":81,"b":108},{"r":184,"g":99,"b":122},{"r":166,"g":82,"b":107},{"r":177,"g":67,"b":76},{"r":127,"g":49,"b":51},{"r":164,"g":100,"b":93},{"r":193,"g":135,"b":121},{"r":203,"g":160,"b":150},{"r":198,"g":145,"b":143},{"r":171,"g":111,"b":99},{"r":176,"g":96,"b":80},{"r":168,"g":76,"b":51},{"r":180,"g":113,"b":120},{"r":202,"g":127,"b":146},{"r":237,"g":156,"b":190},{"r":231,"g":117,"b":164},{"r":222,"g":62,"b":129},{"r":179,"g":76,"b":110},{"r":113,"g":39,"b":57},{"r":79,"g":31,"b":42},{"r":170,"g":34,"b":47},{"r":222,"g":32,"b":52},{"r":207,"g":8,"b":19},{"r":229,"g":84,"b":112},{"r":220,"g":63,"b":181},{"r":194,"g":39,"b":178},{"r":160,"g":28,"b":169},{"r":110,"g":24,"b":117},{"r":115,"g":20,"b":101},{"r":86,"g":22,"b":92},{"r":109,"g":26,"b":157},{"r":27,"g":55,"b":113},{"r":29,"g":78,"b":167},{"r":30,"g":116,"b":187},{"r":33,"g":163,"b":206},{"r":37,"g":194,"b":210},{"r":35,"g":204,"b":165},{"r":39,"g":192,"b":125},{"r":27,"g":156,"b":50},{"r":20,"g":134,"b":4},{"r":112,"g":208,"b":65},{"r":197,"g":234,"b":52},{"r":225,"g":227,"b":47},{"r":255,"g":221,"b":38},{"r":250,"g":192,"b":38},{"r":247,"g":138,"b":39},{"r":254,"g":89,"b":16},{"r":190,"g":110,"b":25},{"r":247,"g":201,"b":127},{"r":251,"g":229,"b":192},{"r":245,"g":245,"b":245},{"r":179,"g":180,"b":179},{"r":145,"g":145,"b":145},{"r":86,"g":78,"b":78},{"r":24,"g":14,"b":14},{"r":88,"g":150,"b":158},{"r":77,"g":111,"b":140},{"r":26,"g":43,"b":85},{"r":160,"g":126,"b":107},{"r":130,"g":99,"b":85},{"r":109,"g":83,"b":70},{"r":62,"g":45,"b":39}]';
+
+    $(function() {
+        alt.emit('Client:Charselector:cefReady');
+    });
+
+    function fillCharacterCreatorWithHairColors() {
+        colors = JSON.parse(colors);
+        lipstickColors = JSON.parse(lipstickColors);
+        var hairColorPrimaryHTML = "",
+            hairColorSecondaryHTML = "",
+            beardColorPrimaryHTML = "",
+            chestHairColorPrimaryHTML = "",
+            lipstickColorPrimaryHTML = "",
+            eyebrowColorHTML = "";
+        for (var i in colors) {
+            console.log(`ColorID: ${i} - Color: ${colors[i].r} - ${colors[i].g} - ${colors[i].b}`);
+            hairColorPrimaryHTML += `<li class='list-group-item' onclick='ChangeHair(1, ${i});' style='background: rgb(${colors[i].r}, ${colors[i].g}, ${colors[i].b});'></li>`;
+            hairColorSecondaryHTML += `<li class='list-group-item' onclick='ChangeHair(2, ${i});' style='background: rgb(${colors[i].r}, ${colors[i].g}, ${colors[i].b});'></li>`;
+            beardColorPrimaryHTML += `<li class='list-group-item' onclick='ChangeHair(4, ${i});' style='background: rgb(${colors[i].r}, ${colors[i].g}, ${colors[i].b});'></li>`;
+            chestHairColorPrimaryHTML += `<li class='list-group-item' onclick='ChangeHair(10, ${i});' style='background: rgb(${colors[i].r}, ${colors[i].g}, ${colors[i].b});'></li>`;
+            eyebrowColorHTML += `<li class='list-group-item' onclick='ChangeHair(6, ${i});' style='background: rgb(${colors[i].r}, ${colors[i].g}, ${colors[i].b});'></li>`;
+        }
+
+        for (var i in lipstickColors) {
+            lipstickColorPrimaryHTML += `<li class='list-group-item' onclick='ChangeHead(10, ${i});' style='background: rgb(${lipstickColors[i].r}, ${lipstickColors[i].g}, ${lipstickColors[i].b});'></li>`;
+        }
+        $("#hairBox-colorPrimaryList").html(hairColorPrimaryHTML);
+        $("#hairBox-colorSecondaryList").html(hairColorSecondaryHTML);
+        $("#hairBox-beardcolorPrimaryList").html(beardColorPrimaryHTML);
+        $("#chesthairBox-colorPrimaryList").html(chestHairColorPrimaryHTML);
+        $("#lipsBox-colorPrimaryList").html(lipstickColorPrimaryHTML);
+        $("#eyeBox-colorPrimaryList").html(eyebrowColorHTML);
+    }
+
+    /* Charaktereditor */
+    function selectCharCreatorGender(gender) { //gender (0 - male | 1 - female)
+        $gender = gender;
+        if ($gender == null || $gender == undefined) return;
+        $("#genderselectBox").fadeTo(500, 0, function() {
+            $("#genderselectBox").hide();
+            alt.emit("Client:Charcreator:hideGenderSelector", $gender);
+        });
+    }
+
+    function selectCharCreatorCategory(htmlElem, category) {
+        $(".CCCItem").removeClass("active");
+        $(htmlElem).addClass("active");
+        $(".creatorBox").addClass("hidden");
+        $(`#charcreator-${category}Box`).removeClass("hidden");
+        if (category == "eye" || category == "cheek" || category == "blemishes" || category == "lips" || category == "chin" || category == "allergy" || category == "nose") {
+            alt.emit("Client:Charcreator:updateCam", "face");
+        } else {
+            alt.emit("Client:Charcreator:updateCam", "default");
+        }
+    }
+
+    function selectCharCreatorCrimeFlag(htmlElem, isCrimeFlagged) {
+        $isCrimeFlagged = isCrimeFlagged;
+        $(".CrimeFlagItem").removeClass("active");
+        $(htmlElem).addClass("active");
+    }
+
+    function finishCharCreator() {
+        var birthday = $("#birthday").val();
+        if (birthday.length < 10 || !isValidDate(birthday)) {
+            showCharCreatorError(`Geburtsdatum nicht gültig.`);
+            return;
+        }
+        showCharCreatorError("unset");
+        alt.emit("Client:Charcreator:CreateCharacter", birthday, $gender, $isCrimeFlagged, JSON.stringify(facefeaturesdata), JSON.stringify(headblendsdata), JSON.stringify(headoverlaysarray));
+        setTimeout(() => {
+            $(".CCCItem").removeClass("active");
+            $gender = null;
+            headoverlaysdata = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0];
+            headoverlaysopacitydata = [1, 10, 10, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0];
+            headoverlayscolordata = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            headoverlaysarray = [headoverlaysdata, headoverlaysopacitydata, headoverlayscolordata];
+            facefeaturesdata = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            headblendsdata = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        }, 1000);
+    }
+
+    function ChangeHair(id, index) {
+        switch (id) {
+            case 0:
+                headoverlaysarray[0][13] = $("#HairVariation").val();
+                break;
+            case 1:
+                headoverlaysarray[2][13] = index;
+                break;
+            case 2:
+                headoverlaysarray[1][13] = index;
+                break;
+            case 3:
+                headoverlaysarray[0][1] = $("#BeardVariation").val();
+                break;
+            case 4:
+                headoverlaysarray[2][1] = index;
+                break;
+            case 5:
+                headoverlaysarray[0][2] = $("#EyebrowsVariation").val();
+                break;
+            case 6:
+                headoverlaysarray[2][2] = index;
+                break;
+            case 7:
+                headoverlaysarray[1][1] = $("#BeardAlpha").val();
+                break;
+            case 8:
+                headoverlaysarray[1][2] = $("#EyebrowsAlpha").val();
+                break;
+            case 9:
+                headoverlaysarray[0][10] = $("#ChestHairVariation").val();
+                break;
+            case 10:
+                headoverlaysarray[2][10] = index;
+                break;
+            case 11:
+                headoverlaysarray[1][10] = $("#ChestHairAlpha").val();
+                break;
+        }
+
+        alt.emit('Client:Charcreator:UpdateHeadOverlays', JSON.stringify(headoverlaysarray));
+        alt.emit('Client:Charcreator:UpdateHeadBlends', JSON.stringify(headblendsdata));
+    }
+
+    function ChangeHead(id, index) {
+        switch (id) {
+            case 0:
+                headblendsdata[0] = fatherVar.value;
+                if (fatherVar.value == "0") {
+                    headblendsdata[0] = 0;
+                } else if (fatherVar.value == "1") {
+                    headblendsdata[0] = 1;
+                } else if (fatherVar.value == "2") {
+                    headblendsdata[0] = 2;
+                } else if (fatherVar.value == "3") {
+                    headblendsdata[0] = 3;
+                } else if (fatherVar.value == "4") {
+                    headblendsdata[0] = 4;
+                } else if (fatherVar.value == "5") {
+                    headblendsdata[0] = 5;
+                } else if (fatherVar.value == "6") {
+                    headblendsdata[0] = 6;
+                } else if (fatherVar.value == "7") {
+                    headblendsdata[0] = 7;
+                } else if (fatherVar.value == "8") {
+                    headblendsdata[0] = 8;
+                } else if (fatherVar.value == "9") {
+                    headblendsdata[0] = 9;
+                } else if (fatherVar.value == "10") {
+                    headblendsdata[0] = 10;
+                } else if (fatherVar.value == "11") {
+                    headblendsdata[0] = 11;
+                } else if (fatherVar.value == "12") {
+                    headblendsdata[0] = 12;
+                } else if (fatherVar.value == "13") {
+                    headblendsdata[0] = 13;
+                } else if (fatherVar.value == "14") {
+                    headblendsdata[0] = 14;
+                } else if (fatherVar.value == "15") {
+                    headblendsdata[0] = 15;
+                } else if (fatherVar.value == "16") {
+                    headblendsdata[0] = 16;
+                } else if (fatherVar.value == "17") {
+                    headblendsdata[0] = 17;
+                } else if (fatherVar.value == "18") {
+                    headblendsdata[0] = 18;
+                } else if (fatherVar.value == "19") {
+                    headblendsdata[0] = 19;
+                } else if (fatherVar.value == "20") {
+                    headblendsdata[0] = 20;
+                } else if (fatherVar.value == "21") {
+                    headblendsdata[0] = 42;
+                } else if (fatherVar.value == "22") {
+                    headblendsdata[0] = 43;
+                } else if (fatherVar.value == "23") {
+                    headblendsdata[0] = 44;
+                }
+                break;
+            case 1:
+                headblendsdata[1] = motherVar.value + 21;
+                if (motherVar.value == "0") {
+                    headblendsdata[1] = 21;
+                } else if (motherVar.value == "1") {
+                    headblendsdata[1] = 22;
+                } else if (motherVar.value == "2") {
+                    headblendsdata[1] = 23;
+                } else if (motherVar.value == "3") {
+                    headblendsdata[1] = 24;
+                } else if (motherVar.value == "4") {
+                    headblendsdata[1] = 25;
+                } else if (motherVar.value == "5") {
+                    headblendsdata[1] = 26;
+                } else if (motherVar.value == "6") {
+                    headblendsdata[1] = 27;
+                } else if (motherVar.value == "7") {
+                    headblendsdata[1] = 28;
+                } else if (motherVar.value == "8") {
+                    headblendsdata[1] = 29;
+                } else if (motherVar.value == "9") {
+                    headblendsdata[1] = 30;
+                } else if (motherVar.value == "10") {
+                    headblendsdata[1] = 31;
+                } else if (motherVar.value == "11") {
+                    headblendsdata[1] = 32;
+                } else if (motherVar.value == "12") {
+                    headblendsdata[1] = 33;
+                } else if (motherVar.value == "13") {
+                    headblendsdata[1] = 34;
+                } else if (motherVar.value == "14") {
+                    headblendsdata[1] = 35;
+                } else if (motherVar.value == "15") {
+                    headblendsdata[1] = 37;
+                } else if (motherVar.value == "16") {
+                    headblendsdata[1] = 38;
+                } else if (motherVar.value == "17") {
+                    headblendsdata[1] = 40;
+                } else if (motherVar.value == "18") {
+                    headblendsdata[1] = 41;
+                } else if (motherVar.value == "19") {
+                    headblendsdata[1] = 45;
+                }
+                break;
+            case 2:
+                headblendsdata[3] = $("#FatherMotherMix").val();
+                break;
+            case 3:
+                headoverlaysarray[1][5] = $("#WangenBlushAlpha").val();
+                break;
+            case 4:
+                headoverlaysarray[0][5] = $("#WangenBlushVariation").val();
+                break;
+            case 5:
+                headoverlaysarray[2][5] = $("#WangenBlushColor").val();
+                break;
+            case 6:
+                headoverlaysarray[1][4] = $("#MakeupAlpha").val();
+                break;
+            case 7:
+                headoverlaysarray[0][4] = $("#MakeupVariation").val();
+                break;
+            case 8:
+                headoverlaysarray[1][8] = $("#LipstickAlpha").val();
+                break;
+            case 9:
+                headoverlaysarray[0][8] = $("#LipstickVariation").val();
+                break;
+            case 10:
+                headoverlaysarray[2][8] = index;
+                break;
+            case 11:
+                headoverlaysarray[1][0] = $("#BlemishesAlpha").val();
+                break;
+            case 12:
+                headoverlaysarray[0][0] = $("#BlemishesIndex").val();
+                break;
+            case 13:
+                headoverlaysarray[1][3] = $("#AgeingAlpha").val();
+                break;
+            case 14:
+                headoverlaysarray[0][3] = $("#AgeingVariation").val();
+                break;
+            case 15:
+                headoverlaysarray[1][6] = $("#ComplexionAlpha").val();
+                break;
+            case 16:
+                headoverlaysarray[0][6] = $("#ComplexionIndex").val();
+                break;
+            case 17:
+                headoverlaysarray[1][7] = $("#SunDamageAlpha").val();
+                break;
+            case 18:
+                headoverlaysarray[0][7] = $("#SunDamageIndex").val();
+                break;
+            case 19:
+                headoverlaysarray[1][9] = $("#MolesAlpha").val();
+                break;
+            case 20:
+                headoverlaysarray[0][9] = $("#MolesIndex").val();
+                break;
+            case 21:
+                headblendsdata[5] = fatherSkinVar.value;
+                if (fatherSkinVar.value == "0") {
+                    headblendsdata[5] = 0;
+                } else if (fatherSkinVar.value == "1") {
+                    headblendsdata[5] = 1;
+                } else if (fatherSkinVar.value == "2") {
+                    headblendsdata[5] = 2;
+                } else if (fatherSkinVar.value == "3") {
+                    headblendsdata[5] = 3;
+                } else if (fatherSkinVar.value == "4") {
+                    headblendsdata[5] = 4;
+                } else if (fatherSkinVar.value == "5") {
+                    headblendsdata[5] = 5;
+                } else if (fatherSkinVar.value == "6") {
+                    headblendsdata[5] = 6;
+                } else if (fatherSkinVar.value == "7") {
+                    headblendsdata[5] = 7;
+                } else if (fatherSkinVar.value == "8") {
+                    headblendsdata[5] = 8;
+                } else if (fatherSkinVar.value == "9") {
+                    headblendsdata[5] = 9;
+                } else if (fatherSkinVar.value == "10") {
+                    headblendsdata[5] = 10;
+                } else if (fatherSkinVar.value == "11") {
+                    headblendsdata[5] = 11;
+                } else if (fatherSkinVar.value == "12") {
+                    headblendsdata[5] = 12;
+                } else if (fatherSkinVar.value == "13") {
+                    headblendsdata[5] = 13;
+                } else if (fatherSkinVar.value == "14") {
+                    headblendsdata[5] = 14;
+                } else if (fatherSkinVar.value == "15") {
+                    headblendsdata[5] = 15;
+                } else if (fatherSkinVar.value == "16") {
+                    headblendsdata[5] = 16;
+                } else if (fatherSkinVar.value == "17") {
+                    headblendsdata[5] = 17;
+                } else if (fatherSkinVar.value == "18") {
+                    headblendsdata[5] = 18;
+                } else if (fatherSkinVar.value == "19") {
+                    headblendsdata[5] = 19;
+                } else if (fatherSkinVar.value == "20") {
+                    headblendsdata[5] = 20;
+                } else if (fatherSkinVar.value == "21") {
+                    headblendsdata[5] = 42;
+                } else if (fatherSkinVar.value == "22") {
+                    headblendsdata[5] = 43;
+                } else if (fatherSkinVar.value == "23") {
+                    headblendsdata[5] = 44;
+                }
+                break;
+            case 22:
+                headblendsdata[2] = motherSkinVar.value;
+                if (motherSkinVar.value == "0") {
+                    headblendsdata[2] = 21;
+                } else if (motherSkinVar.value == "1") {
+                    headblendsdata[2] = 22;
+                } else if (motherSkinVar.value == "2") {
+                    headblendsdata[2] = 23;
+                } else if (motherSkinVar.value == "3") {
+                    headblendsdata[2] = 24;
+                } else if (motherSkinVar.value == "4") {
+                    headblendsdata[2] = 25;
+                } else if (motherSkinVar.value == "5") {
+                    headblendsdata[2] = 26;
+                } else if (motherSkinVar.value == "6") {
+                    headblendsdata[2] = 27;
+                } else if (motherSkinVar.value == "7") {
+                    headblendsdata[2] = 28;
+                } else if (motherSkinVar.value == "8") {
+                    headblendsdata[2] = 29;
+                } else if (motherSkinVar.value == "9") {
+                    headblendsdata[2] = 30;
+                } else if (motherSkinVar.value == "10") {
+                    headblendsdata[2] = 31;
+                } else if (motherSkinVar.value == "11") {
+                    headblendsdata[2] = 32;
+                } else if (motherSkinVar.value == "12") {
+                    headblendsdata[2] = 33;
+                } else if (motherSkinVar.value == "13") {
+                    headblendsdata[2] = 34;
+                } else if (motherSkinVar.value == "14") {
+                    headblendsdata[2] = 35;
+                } else if (motherSkinVar.value == "15") {
+                    headblendsdata[2] = 37;
+                } else if (motherSkinVar.value == "16") {
+                    headblendsdata[2] = 38;
+                } else if (motherSkinVar.value == "17") {
+                    headblendsdata[2] = 40;
+                } else if (motherSkinVar.value == "18") {
+                    headblendsdata[2] = 41;
+                } else if (motherSkinVar.value == "19") {
+                    headblendsdata[2] = 45;
+                }
+                break;
+            case 23:
+                headblendsdata[4] = $("#FatherMotherSkinMix").val();
+                break;
+            case 24:
+                headoverlaysarray[0][14] = $("#EyesColor").val();
+                break;
+        }
+
+        alt.emit('Client:Charcreator:UpdateHeadOverlays', JSON.stringify(headoverlaysarray));
+        alt.emit('Client:Charcreator:UpdateHeadBlends', JSON.stringify(headblendsdata));
+    }
+
+    function ChangeFace(id) {
+        switch (id) {
+            case 1:
+                facefeaturesdata[6] = $("#EyebrowsHeight").val();
+                break;
+            case 2:
+                facefeaturesdata[7] = $("#EyebrowsWidth").val();
+                break;
+            case 3:
+                facefeaturesdata[11] = $("#EyesSize").val();
+                break;
+            case 4:
+                facefeaturesdata[12] = $("#lipsfill").val();
+                break;
+            case 5:
+                facefeaturesdata[18] = $("#chinShape").val();
+                break;
+            case 6:
+                facefeaturesdata[16] = $("#chinPosition").val();
+                break;
+            case 7:
+                facefeaturesdata[15] = $("#chinLength").val();
+                break;
+            case 8:
+                facefeaturesdata[17] = $("#chinWidth").val();
+                break;
+            case 9:
+                facefeaturesdata[13] = $("#jawWidth").val();
+                break;
+            case 10:
+                facefeaturesdata[14] = $("#jawHeight").val();
+                break;
+            case 11:
+                facefeaturesdata[8] = $("#cheekboneHeight").val();
+                break;
+            case 12:
+                facefeaturesdata[9] = $("#cheekboneWidth").val();
+                break;
+            case 13:
+                facefeaturesdata[10] = $("#cheeksWidth").val();
+                break;
+            case 14:
+                facefeaturesdata[19] = $("#neckWidth").val();
+                break;
+            case 15:
+                facefeaturesdata[4] = $("#noseTip").val();
+                break;
+            case 16:
+                facefeaturesdata[1] = $("#noseHeight").val();
+                break;
+            case 17:
+                facefeaturesdata[2] = $("#noseLength").val();
+                break;
+            case 18:
+                facefeaturesdata[3] = $("#noseBridge").val();
+                break;
+            case 19:
+                facefeaturesdata[5] = $("#noseShift").val();
+                break;
+            case 20:
+                facefeaturesdata[0] = $("#noseWidth").val();
+                break;
+        }
+        alt.emit('Client:Charcreator:UpdateFaceFeature', JSON.stringify(facefeaturesdata));
+    }
+
+    function showCharCreatorError(msg) {
+        if (msg == "unset") {
+            $("#charcreatorerror").hide();
+            return;
+        }
+        $("#charcreatorerror").html(msg);
+        $("#charcreatorerror").show();
+    }
+
+    function isValidDate(date) {
+        var temp = date.split('.');
+        var d = new Date(temp[1] + '/' + temp[0] + '/' + temp[2]);
+        return (d && (d.getMonth() + 1) == temp[1] && d.getDate() == Number(temp[0]) && d.getFullYear() == Number(temp[2]));
+    }
+
+    if ('alt' in window) {
+        alt.on("CEF:Charcreator:openGenderSelect", () => {
+            $("#genderselectBox").fadeTo(500, 1, function() {
+                $("#genderselectBox").show();
+            });
+        });
+
+        alt.on("CEF:Charcreator:openCreator", () => {
+            fillCharacterCreatorWithHairColors();
+            $("#charcreatorMainBox").fadeTo(500, 1, function() {
+                $("#charcreatorMainBox").show();
+            });
+        });
+
+        alt.on("CEF:Charcreator:showError", (msg) => {
+            showCharCreatorError(msg);
+        });
+
+        alt.on("CEF:Charcreator:fadeOut", () => {
+            $("#charcreatorMainBox").fadeTo(500, 0, function() {
+                $("#charcreatorMainBox").hide();
+            });
+        });
+
+        alt.on("CEF:Charselector:showLoadingscreen", (duration) => {
+            setTimeout(() => {
+                $("#loadingScreen").fadeTo(1000, 1, function() {
+                    $("#loadingScreen").show();
+                });
+            }, duration);
+        });
+    }
+</script>
+
+</html>

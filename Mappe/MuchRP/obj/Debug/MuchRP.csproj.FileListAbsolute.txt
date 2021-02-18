@@ -1,0 +1,11 @@
+D:\GitLab space\muchrp\Server\resources\roleplay\MuchRP.deps.json
+D:\GitLab space\muchrp\Server\resources\roleplay\MuchRP.runtimeconfig.json
+D:\GitLab space\muchrp\Server\resources\roleplay\MuchRP.runtimeconfig.dev.json
+D:\GitLab space\muchrp\Server\resources\roleplay\MuchRP.dll
+D:\GitLab space\muchrp\Server\resources\roleplay\MuchRP.pdb
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Debug\MuchRP.AssemblyInfoInputs.cache
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Debug\MuchRP.AssemblyInfo.cs
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Debug\MuchRP.csproj.CopyComplete
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Debug\MuchRP.dll
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Debug\MuchRP.pdb
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Debug\MuchRP.csprojAssemblyReference.cache

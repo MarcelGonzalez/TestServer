@@ -1,0 +1,107 @@
+﻿<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../utils/materialize.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Login</title>
+</head>
+
+<body>
+    <div id="loginBox" class="box">
+        <img src="../utils/img/logo.png">
+        <p class="title">AMESTRIS ROLEPLAY</p>
+        <p id="error">Ein Fehler ist aufgetreten.</p>
+        <hr>
+        <p class="description">Willkommen auf Amestris Roleplay.<br>Trage Nutzernamen und Passwort ein - hast du noch keinen Account? <br>Dann wird dir durch den Versuch einer angelegt.</p>
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="username" type="text" class="validate">
+                        <label for="username">Benutzername</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">https</i>
+                        <input id="password" type="password" class="validate">
+                        <label for="password">Password</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <a id="loginBtn" class="waves-effect waves-light indigo btn-small"><i class="material-icons left">done</i>Fortfahren</a>
+    </div>
+
+
+    <script src="../utils/materialize.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="../utils/bootstrap.min.js"></script>
+    <script src="../utils/anime.min.js"></script>
+    <script src="https://kit.fontawesome.com/640357ffb4.js"></script>
+</body>
+
+<script>
+    $(function() {
+        setTimeout(() => {
+            alt.emit('Client:Login:cefReady');
+            $("#loginBox").fadeTo(1000, 1, function() {
+                $("#loginBox").show();
+            });
+        }, 1500);
+    });
+
+    // Login Button
+    $("#loginBtn").click(function() {
+        var usernameval = $("#username").val().replace(/^\s+|\s+$/g, "");
+        var passvalue = $("#password").val().replace(/^\s+|\s+$/g, "");
+
+        if (usernameval.length < 3) {
+            showError("Der Benutzername muss mindestens drei Zeichen lang sein.");
+            return;
+        }
+
+        if (passvalue.length <= 0) {
+            showError("Du hast kein Passwort eingegeben.");
+            return;
+        }
+
+        alt.emit('Client:Login:ValidataLoginCredentials', usernameval, passvalue);
+    });
+
+    function showError(msg) {
+        $("#error").text(msg);
+        $("#error").fadeIn(800);
+    }
+
+    function fadeOutBrowser() {
+        $("#loginBox").fadeTo(500, 0, function() {
+            $("#loginBox").hide();
+        });
+    }
+
+    if ('alt' in window) {
+        alt.on("CEF:Login:showError", (msg) => {
+            showError(msg);
+        });
+
+        alt.on("CEF:Login:setStorage", (name, password) => {
+            $("#username").val(`${name}`);
+            $("#password").val(`${password}`);
+        });
+
+        alt.on("CEF:Login:fadeOut", () => {
+            fadeOutBrowser();
+        });
+    }
+</script>
+
+</html>

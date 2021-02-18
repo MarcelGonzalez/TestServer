@@ -1,0 +1,16 @@
+D:\GitLab space\muchrp\Server\resources\roleplay\discordbot\DiscordBot.deps.json
+D:\GitLab space\muchrp\Server\resources\roleplay\discordbot\DiscordBot.runtimeconfig.json
+D:\GitLab space\muchrp\Server\resources\roleplay\discordbot\DiscordBot.runtimeconfig.dev.json
+D:\GitLab space\muchrp\Server\resources\roleplay\discordbot\DiscordBot.dll
+D:\GitLab space\muchrp\Server\resources\roleplay\discordbot\DiscordBot.pdb
+D:\GitLab space\muchrp\Mappe\DiscordBot\obj\Debug\DiscordBot.AssemblyInfoInputs.cache
+D:\GitLab space\muchrp\Mappe\DiscordBot\obj\Debug\DiscordBot.AssemblyInfo.cs
+D:\GitLab space\muchrp\Mappe\DiscordBot\obj\Debug\DiscordBot.csproj.CopyComplete
+D:\GitLab space\muchrp\Mappe\DiscordBot\obj\Debug\DiscordBot.dll
+D:\GitLab space\muchrp\Mappe\DiscordBot\obj\Debug\DiscordBot.pdb
+D:\GitLab space\muchrp\Server\resources\discordbot\DiscordBot.deps.json
+D:\GitLab space\muchrp\Server\resources\discordbot\DiscordBot.runtimeconfig.json
+D:\GitLab space\muchrp\Server\resources\discordbot\DiscordBot.runtimeconfig.dev.json
+D:\GitLab space\muchrp\Server\resources\discordbot\DiscordBot.dll
+D:\GitLab space\muchrp\Server\resources\discordbot\DiscordBot.pdb
+D:\GitLab space\muchrp\Mappe\DiscordBot\obj\Debug\DiscordBot.csprojAssemblyReference.cache

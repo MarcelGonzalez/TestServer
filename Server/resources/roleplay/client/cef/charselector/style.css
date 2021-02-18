@@ -1,0 +1,512 @@
+@font-face {
+    font-family: 'PEL';
+    src: url('../utils/fonts/Poppins-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'PM';
+    src: url('../utils/fonts/Poppins-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'PT';
+    src: url('../utils/fonts/Poppins-Thin.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'OSR';
+    src: url('../utils/fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'OSL';
+    src: url('../utils/fonts/OpenSans-Light.ttf') format('truetype');
+}
+
+div#loadingScreen {
+    opacity: 0;
+    display: none;
+}
+
+div#charcreator-infoBox>ul>li {
+    float: left;
+    width: 150px;
+    margin-left: 10px;
+    background: rgb(31, 31, 31) !important;
+    border-radius: 2px !important;
+    border: 1px solid #0c0c0c !important;
+    justify-content: center;
+    align-items: center;
+    padding: 20px !important;
+    transition: all 0.3s ease-in-out;
+}
+
+div#charcreator-infoBox>ul>li:nth-child(1).active {
+    background: #5968e7 !important;
+}
+
+div#charcreator-infoBox>ul>li:nth-child(2).active {
+    background: #9a55cf !important;
+}
+
+div#charcreator-infoBox>ul>li:hover {
+    background: #4a4b52 !important;
+}
+
+div#charcreator-infoBox>ul>li>img {
+    width: 42px;
+    margin-bottom: 10px;
+}
+
+div#charcreator-infoBox>ul>li>p {
+    margin-bottom: 0;
+    color: #d2d2d2;
+}
+
+div#charcreator-hairBox>div.container>ul,
+div#charcreator-chesthairBox>div.container>ul,
+div#charcreator-lipsBox>div.container>ul,
+div#charcreator-eyeBox>div.container>ul {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+div#charcreator-hairBox>div.container>p>i,
+div#charcreator-chesthairBox>div.container>p>i,
+div#charcreator-lipsBox>div.container>p>i,
+div#charcreator-eyeBox>div.container>p>i {
+    float: right;
+    background: #5e66e5;
+    padding: 4px;
+    padding-left: 8px;
+    color: #ffffff;
+    padding-right: 8px;
+    border-radius: 1px;
+}
+
+.collapse.show,
+.collapsing {
+    display: inline-block !important;
+}
+
+div#charcreator-hairBox>div.container>ul>li,
+div#charcreator-chesthairBox>div.container>ul>li,
+div#charcreator-lipsBox>div.container>ul>li,
+div#charcreator-eyeBox>div.container>ul>li {
+    float: left;
+    width: auto;
+    margin-left: 3px;
+    border-radius: 150px !important;
+    border: 2px solid #0c0c0c !important;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4px;
+    padding: 16px !important;
+    transition: all 0.3s ease-in-out;
+}
+
+div#charcreator-hairBox>div.container>ul>li:hover,
+div#charcreator-chesthairBox>div.container>ul>li:hover,
+div#charcreator-lipsBox>div.container>ul>li:hover,
+div#charcreator-eyeBox>div.container>ul>li:hover {
+    transform: scale(1.10);
+    border: 2px solid #d2d2d2 !important;
+}
+
+body {
+    user-select: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: hidden;
+    /* background: url(https://i.imgur.com/Y7kgqck.jpg); */
+}
+
+div#charselectorBox {
+    display: none;
+    opacity: 0;
+    width: 600px;
+    padding: 35px;
+    position: absolute;
+    z-index: 100;
+    background: #101010f2;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 1px 4px 22px rgba(25, 25, 25, 0.8) !important;
+    padding-bottom: 12px;
+}
+
+div#genderselectBox {
+    display: none;
+    opacity: 0;
+    width: 600px;
+    padding: 35px;
+    position: absolute;
+    z-index: 100;
+    background: #101010f2;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 1px 4px 22px rgba(25, 25, 25, 0.8) !important;
+    padding-bottom: 12px;
+}
+
+div#charselectorBox>ul,
+div#genderselectBox>ul {
+    display: block !important;
+}
+
+div#genderselectBox>ul>li {
+    float: left;
+    width: 150px;
+    margin-left: 80px;
+    background: rgb(31, 31, 31) !important;
+    border-radius: 2px !important;
+    border: 1px solid #0c0c0c !important;
+    justify-content: center;
+    align-items: center;
+    padding: 20px !important;
+    transition: all 0.3s ease-in-out;
+}
+
+div#genderselectBox>ul>li:nth-child(1):hover {
+    background: rgb(61, 114, 240) !important;
+}
+
+div#genderselectBox>ul>li:nth-child(2):hover {
+    background: rgb(154, 84, 207) !important;
+}
+
+div#genderselectBox>ul>li>img {
+    width: 42px;
+    margin-bottom: 10px;
+}
+
+div#genderselectBox>ul>li>p {
+    color: #d2d2d2;
+    font-family: PEL;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+div#charselectorBox>ul>li {
+    border-radius: 2px !important;
+    border: 1px solid #0c0c0c !important;
+    padding: 15px !important;
+    text-align: left;
+    display: list-item !important;
+    list-style: none;
+}
+
+div#charselectorBox>ul>li>span {
+    color: #d2d2d2;
+    font-family: PT;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+div#charselectorBox>ul>li>button {
+    font-family: PEL;
+    opacity: .25;
+    background: #19a94c;
+    transition: all 0.3s ease-in-out !important;
+}
+
+div#charselectorBox>ul>li>button:hover {
+    opacity: 1;
+}
+
+div#charselectorBox>ul>li:nth-child(odd) {
+    background: rgb(23, 23, 23) !important;
+}
+
+div#charselectorBox>ul>li:nth-child(even) {
+    background: rgb(29, 29, 29) !important;
+}
+
+div#charselectorBox>img,
+div#genderselectBox>img {
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+div#charselectorBox>p.title,
+div#genderselectBox>p.title {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #d2d2d2;
+    font-family: PEL;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+div#charselectorBox>hr,
+div#genderselectBox>hr {
+    border-top: none !important;
+    border: 1px solid transparent !important;
+    border-image: linear-gradient(to right, #5969e7 0%, #9e55ce 100%) !important;
+    border-image-slice: 1 !important;
+}
+
+div#charselectorBox>p.description {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #d2d2d2;
+    font-family: PEL;
+    font-size: 14px;
+}
+
+div#genderselectBox>p.description {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #d2d2d2;
+    font-family: PEL;
+    font-size: 14px;
+}
+
+.input-field label {
+    color: #5869e7;
+    font-family: OSL;
+    font-weight: bold;
+}
+
+.input-field input[type=text]:focus+label,
+.input-field input[type=password]:focus+label {
+    color: #7d5eda !important;
+}
+
+.input-field input[type=text]:focus,
+.input-field input[type=password]:focus {
+    border-bottom: 1px solid #7d5eda !important;
+    box-shadow: 0 1px 0 0 #7d5eda!important;
+}
+
+.input-field .prefix.active {
+    color: #7d5eda !important;
+}
+
+.input-field .prefix {
+    color: #5869e7 !important;
+}
+
+.input-field input[type=text],
+.input-field input[type=password] {
+    border-bottom: 1px solid #5869e7 !important;
+    color: #ffffffcc;
+}
+
+input,
+label,
+i {
+    opacity: .85;
+}
+
+.row {
+    margin-bottom: 0 !important;
+}
+
+div#charselectorBox>a {
+    opacity: 0.5;
+    color: #d2d2d2 !important;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+div#charselectorBox>a:hover {
+    opacity: 1;
+}
+
+
+/* Charcreator */
+
+div#charcreatorMainBox {
+    display: none;
+    opacity: 0;
+}
+
+.hidden {
+    display: none;
+    opacity: 0;
+}
+
+div.creatorBox {
+    width: 25.5vw;
+    padding: 20px;
+    position: absolute;
+    z-index: 100;
+    background: #101010f2;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 1px 4px 22px rgba(25, 25, 25, 0.8) !important;
+    padding-bottom: 12px;
+    right: 3vw;
+    top: 3vw;
+    overflow-y: hidden;
+    max-height: 50vw;
+}
+
+p#charcreatorerror {
+    display: none;
+    color: #d64949;
+}
+
+div.creatorBox>button {
+    margin-top: 10px;
+    border: 0px;
+    background: linear-gradient(to right, #5969e7 0%, #9e55ce 100%) !important;
+    opacity: .25;
+    font-family: PEL;
+    transition: all 0.3s ease-in-out;
+}
+
+div.creatorBox>button:hover {
+    opacity: 1;
+}
+
+div.creatorBox>button:focus {
+    box-shadow: 0 0 0 0.2rem rgb(125, 94, 218);
+}
+
+div.creatorBox>div.container>input[type=text] {
+    outline: none;
+    border: 2px solid #000000b8;
+    width: 300px;
+    margin-bottom: 15px;
+    text-align: center;
+    background: rgba(43, 43, 43, 0.28);
+    margin-top: 5px;
+    color: #d2d2d2;
+    font-family: OSL;
+}
+
+div#charcreatorMainBox>div#charcreatorCategoryBox {
+    width: 26vw;
+    padding: 20px;
+    position: absolute;
+    z-index: 100;
+    background: #101010f2;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 1px 4px 22px rgba(25, 25, 25, 0.8) !important;
+    padding-bottom: 12px;
+    left: 3vw;
+    top: 3vw;
+}
+
+div#charcreatorMainBox>div#charcreatorCategoryBox>p,
+div.creatorBox>p {
+    color: #d2d2d2;
+    font-family: PEL;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 0px;
+    letter-spacing: 1px;
+    margin-left: 4px;
+}
+
+div.creatorBox>div.container {
+    border-bottom: 1px solid rgb(58, 58, 58);
+    margin-top: 15px;
+}
+
+div.creatorBox>div.container>p {
+    color: #d2d2d2;
+    font-family: PT;
+    letter-spacing: 0px;
+    text-align: left;
+    margin-bottom: 2px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+div.creatorBox>div.container>form>input {
+    opacity: 0.5;
+    -webkit-appearance: none;
+    width: 380px;
+    height: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    border-radius: 2px;
+    margin-left: -15px;
+}
+
+div.creatorBox>div.container>form>output {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.5);
+    font-family: PEL;
+    font-weight: bold;
+    color: #d2d2d2;
+    font-size: 0.85rem;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    border-radius: 4px;
+    margin-left: 10px;
+    top: -4px;
+    position: relative;
+}
+
+div.creatorBox>div.container>form>input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 20px;
+    background: linear-gradient(to right, #5969e7 50%, #9e55ce 100%) !important;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+div#charcreatorMainBox>div#charcreatorCategoryBox>hr,
+div.creatorBox>hr {
+    border-top: none !important;
+    border: 1px solid transparent !important;
+    border-image: linear-gradient(to right, #5969e7 0%, #9e55ce 100%) !important;
+    border-image-slice: 1 !important;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+div#charcreatorMainBox>div#charcreatorCategoryBox>ul {
+    display: block !important;
+}
+
+div#charcreatorMainBox>div#charcreatorCategoryBox>ul>li {
+    float: left;
+    width: 150px;
+    background: transparent;
+    border-radius: 0px !important;
+    border: 1px solid #000;
+    justify-content: center;
+    align-items: center;
+    padding: 10px !important;
+    transition: all 0.3s ease-in-out;
+    opacity: .3;
+}
+
+div#charcreatorMainBox>div#charcreatorCategoryBox>ul>li.active {
+    opacity: 1 !important;
+    border: 1px solid transparent !important;
+    border-image: linear-gradient(to right, #5969e7 0%, #9e55ce 100%) !important;
+    border-image-slice: 1 !important;
+    background: linear-gradient(to right, #5969e7 0%, #9e55ce 100%) !important;
+}
+
+div#charcreatorMainBox>div#charcreatorCategoryBox>ul>li:hover {
+    opacity: 1;
+    border: 1px solid transparent !important;
+    border-image: linear-gradient(to right, #5969e7 0%, #9e55ce 100%) !important;
+    border-image-slice: 1 !important;
+}
+
+div#charcreatorMainBox>div#charcreatorCategoryBox>ul>li>p {
+    color: #d2d2d2;
+    font-family: PEL;
+    margin-bottom: 0;
+    margin-top: 5px;
+    letter-spacing: 1px;
+    font-size: 14px;
+}

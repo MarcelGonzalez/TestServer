@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "DiscordBot": {
+      "commandName": "Executable",
+      "executablePath": "D:\\GitLab space\\muchrp\\Server\\altv-server.exe",
+      "workingDirectory": "D:\\GitLab space\\muchrp\\Server"
+    }
+  }
+}

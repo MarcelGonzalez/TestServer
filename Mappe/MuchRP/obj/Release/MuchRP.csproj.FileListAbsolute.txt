@@ -1,0 +1,13 @@
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Release\MuchRP.deps.json
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Release\MuchRP.runtimeconfig.json
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Release\MuchRP.runtimeconfig.dev.json
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Release\MuchRP.dll
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Release\MuchRP.pdb
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Release\AltV.Net.dll
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Release\AltV.Net.Async.dll
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Release\AltV.Net.Resources.Chat.Api.dll
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Release\MuchRP.AssemblyInfoInputs.cache
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Release\MuchRP.AssemblyInfo.cs
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Release\MuchRP.csproj.CopyComplete
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Release\MuchRP.dll
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Release\MuchRP.pdb

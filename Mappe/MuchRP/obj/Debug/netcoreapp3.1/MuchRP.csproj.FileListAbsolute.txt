@@ -1,0 +1,9 @@
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Debug\netcoreapp3.1\MuchRP.deps.json
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Debug\netcoreapp3.1\MuchRP.dll
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Debug\netcoreapp3.1\MuchRP.AssemblyInfoInputs.cache
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Debug\netcoreapp3.1\MuchRP.AssemblyInfo.cs
+D:\GitLab space\muchrp\Server\resources\roleplay\netcoreapp3.1\MuchRP.deps.json
+D:\GitLab space\muchrp\Server\resources\roleplay\netcoreapp3.1\MuchRP.dll
+D:\GitLab space\muchrp\Server\resources\roleplay\netcoreapp3.1\MuchRP.pdb
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Debug\netcoreapp3.1\MuchRP.dll
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Debug\netcoreapp3.1\MuchRP.pdb

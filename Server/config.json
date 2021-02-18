@@ -1,0 +1,9 @@
+{
+    "DatabaseHost": "localhost",
+    "DatabasePort": 3306,
+    "DatabaseUser": "root",
+    "DatabasePass": "",
+    "DatabaseDb": "muchrp",
+    "discordBotToken": "",
+    "discordBotChannel": 758666742372237312
+}

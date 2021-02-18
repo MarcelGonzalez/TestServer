@@ -1,0 +1,137 @@
+@font-face {
+    font-family: 'PEL';
+    src: url('../utils/fonts/Poppins-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'PM';
+    src: url('../utils/fonts/Poppins-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'PT';
+    src: url('../utils/fonts/Poppins-Thin.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'OSR';
+    src: url('../utils/fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'OSL';
+    src: url('../utils/fonts/OpenSans-Light.ttf') format('truetype');
+}
+
+body {
+    user-select: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: hidden;
+}
+
+.box {
+    display: none;
+    opacity: 0;
+    width: 600px;
+    padding: 35px;
+    position: absolute;
+    z-index: 100;
+    /* background: #000000cf; */
+    background: #080917cf;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 1px 4px 22px rgba(25, 25, 25, 0.8) !important;
+    padding-bottom: 12px;
+}
+
+div.box>p#error {
+    display: none;
+    color: #c54d4d;
+    font-family: PT;
+    font-weight: bold;
+    margin-top: -5px;
+}
+
+div.box>img {
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+div.box>p.title {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #d2d2d2;
+    font-family: PEL;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+div.box>hr {
+    border-top: none !important;
+    border: 1px solid transparent !important;
+    border-image: linear-gradient(to right, #5969e7 0%, #9e55ce 100%) !important;
+    border-image-slice: 1 !important;
+}
+
+div.box>p.description {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #d2d2d2;
+    font-family: PEL;
+    font-size: 15px;
+}
+
+.input-field label {
+    color: #5869e7;
+    font-family: OSL;
+    font-weight: bold;
+}
+
+.input-field input[type=text]:focus+label,
+.input-field input[type=password]:focus+label {
+    color: #7d5eda !important;
+}
+
+.input-field input[type=text]:focus,
+.input-field input[type=password]:focus {
+    border-bottom: 1px solid #7d5eda !important;
+    box-shadow: 0 1px 0 0 #7d5eda!important;
+}
+
+.input-field .prefix.active {
+    color: #7d5eda !important;
+}
+
+.input-field .prefix {
+    color: #5869e7 !important;
+}
+
+.input-field input[type=text],
+.input-field input[type=password] {
+    border-bottom: 1px solid #5869e7 !important;
+    color: #ffffffcc;
+}
+
+input,
+label,
+i {
+    opacity: .85;
+}
+
+.row {
+    margin-bottom: 0 !important;
+}
+
+div.box>a {
+    opacity: 0.5;
+    color: #d2d2d2 !important;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+div.box>a:hover {
+    opacity: 1;
+}

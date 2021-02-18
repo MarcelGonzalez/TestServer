@@ -1,0 +1,1655 @@
+﻿<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../utils/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../utils/toastr.min.css">
+    <link rel="stylesheet" href="../utils/mdb/css/mdb-sass.css">
+    <script type="text/javascript" src="../utils/colorpicker.js"></script>
+    <title>HUD</title>
+</head>
+
+<body>
+    <!-- Geld-HUD -->
+    <div id="moneyHUD" class="float-right" style="width: auto; position: relative; top: 4vw; right: 4vw;">
+        <p id="moneyHUD-currentMoney" style="margin-bottom: 10px;">0 $</p>
+    </div>
+
+    <ul id="InteractionMenu"></ul>
+
+    <!-- Inventar -->
+    <div id="inventoryHUD">
+        <p class="title">INVENTAR
+            <font style="float: right;" id="inventoryHUD-Weight">0 / 15kg</font>
+        </p>
+        <hr>
+        <ul class="list-group" id="inventoryHUD-List"></ul>
+    </div>
+
+    <div id="inventoryHUD-DropSelect">
+        <p>ANZAHL EINGEBEN</p>
+        <input id="inventoryHUD-DropSelect-Input" type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+        <button onclick="dropItem();" class="btn btn-sm btn-success"><i class="fas fa-check"></i></button>
+    </div>
+
+    <div id="inventoryHUD-UseSelect">
+        <p>ANZAHL EINGEBEN</p>
+        <input id="inventoryHUD-UseSelect-Input" type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+        <button onclick="useItem();" class="btn btn-sm btn-success"><i class="fas fa-check"></i></button>
+    </div>
+
+
+    <!-- Shop-HUD -->
+    <div id="shopHUD">
+        <span onclick="closeShopCef();"><i class="fas fa-times"></i></span>
+        <p class="title">EINKAUFSLADEN</p>
+        <ul class="list-group" id="shopHUD-List"></ul>
+
+        <div id="shopHUD-BuySelect">
+            <p>ANZAHL EINGEBEN</p>
+            <input id="shopHUD-BuySelect-Input" type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+            <button onclick="buyShopItem();" class="btn btn-sm btn-success"><i class="fas fa-check"></i></button>
+        </div>
+    </div>
+
+    <div id="shopManagerHUD">
+        <div class="inventoryBox">
+            <span onclick="closeShopManagerCef();"><i class="fas fa-times"></i></span>
+            <p>DEIN INVENTAR</p>
+            <ul class="list-group" id="shopManagerHUD-inventoryList"></ul>
+        </div>
+        <div class="shopitemBox">
+            <p>SHOP INVENTAR</p>
+            <ul class="list-group" id="shopManagerHUD-shopList"></ul>
+        </div>
+    </div>
+
+    <!-- ATM HUD -->
+    <div id="atmHUD">
+        <span onclick="closeATMCef();"><i class="fas fa-times"></i></span>
+        <p class="title">BANKAUTOMAT</p>
+        <p class="desc">Dein aktueller Kontostand beträgt:
+            <font id="atmHUD-balance"></font>
+        </p>
+        <div id="atmHUD-Home">
+            <ul class="list-group">
+                <li class="list-group-item" onclick="ShowATMWindow('atmHUD-Withdraw');">
+                    <img src="../utils/img/withdraw.png" class="img-fluid">
+                    <p>Auszahlen</p>
+                </li>
+                <li class="list-group-item" onclick="ShowATMWindow('atmHUD-Transactions');">
+                    <img src="../utils/img/bill.png" class="img-fluid">
+                    <p>Transaktionen</p>
+                </li>
+                <li class="list-group-item" onclick="ShowATMWindow('atmHUD-Deposit');">
+                    <img src="../utils/img/deposit.png" class="img-fluid">
+                    <p>Einzahlen</p>
+                </li>
+            </ul>
+        </div>
+
+        <div id="atmHUD-Withdraw">
+            <input id="atmHUD-Withdraw-Input" class="w-50" type="number" placeholder="Betrag eingeben..." onkeypress="return event.charCode >= 48 && event.charCode <= 57"><br>
+            <button onclick="atmWithdrawMoney();" type="button" class="btn btn-success">AUSZAHLEN</button>
+        </div>
+
+        <div id="atmHUD-Deposit">
+            <input id="atmHUD-Deposit-Input" class="w-50" type="number" placeholder="Betrag eingeben..." onkeypress="return event.charCode >= 48 && event.charCode <= 57"><br>
+            <button onclick="atmDepositMoney();" type="button" class="btn btn-success">EINZAHLEN</button>
+        </div>
+    </div>
+
+    <!-- Vehicle Shop HUD -->
+    <div id="VehicleShopHUD">
+        <span class="close" onclick="closeVehicleShopCef();"><i class="fas fa-times"></i></span>
+        <p class="title" style="margin-bottom: 0;">FAHRZEUGHÄNDLER</p>
+        <div>
+            <ul id="VehicleShopHUD-List" class="list-group"></ul>
+        </div>
+    </div>
+
+    <!-- Garage HUD -->
+    <div id="GarageHUD">
+        <span class="close" onclick="closeGarageCef();"><i class="fas fa-times"></i></span>
+        <p class="title" style="margin-bottom: 0;">GARAGE</p>
+        <span id="GarageHUD-1" class="button active" onclick="GarageHUDSwitchWindow('einparken', this)">EINPARKEN</span>
+        <span id="GarageHUD-2" class="button" onclick="GarageHUDSwitchWindow('ausparken', this)">AUSPARKEN</span>
+        <div>
+            <ul id="GarageHUD-ParkedVehicles" class="list-group"></ul>
+            <ul id="GarageHUD-OutsideVehicles" class="list-group"></ul>
+        </div>
+    </div>
+
+    <!-- Rotation Input  -->
+    <div id="RotationHUD" class="slidecontainer" style="text-align: center; position: relative; height: 100%; width: 100%;">
+        <input style="position: relative; top: 90%; width: 20%;" type="range" min="1" max="360" value="180" class="slider" oninput="rotatePlayer(this)">
+    </div>
+
+    <!-- Tattoo Shop HUD -->
+    <div id="TattooShopHUD">
+        <span onclick="closeTattooShopCef();"><i class="fas fa-times"></i></span>
+        <p class="title" style="margin-bottom: 0;">TATTOO LADEN</p>
+        <ul class="list-group" id="TattooShopHUD-HomeList">
+            <li class="list-group-item" onclick="openTattooCategory('Head');">
+                <img class="img-fluid" src="../utils/img/skin.png">
+                <p>Kopf</p>
+            </li>
+            <li class="list-group-item" onclick="openTattooCategory('leftArm');">
+                <img class="img-fluid" src="../utils/img/arm.png">
+                <p>Linker Arm</p>
+            </li>
+            <li class="list-group-item" onclick="openTattooCategory('Torso');">
+                <img class="img-fluid" src="../utils/img/body-parts.png">
+                <p>Brust</p>
+            </li>
+            <li class="list-group-item" onclick="openTattooCategory('rightArm');">
+                <img class="img-fluid" src="../utils/img/armright.png">
+                <p>Rechter Arm</p>
+            </li>
+            <li class="list-group-item" onclick="openTattooCategory('leftLeg');">
+                <img class="img-fluid" src="../utils/img/legsright.png">
+                <p>Linkes Bein</p>
+            </li>
+            <li class="list-group-item" onclick="openTattooCategory('rightLeg');">
+                <img class="img-fluid" src="../utils/img/legs.png">
+                <p>Rechtes Bein</p>
+            </li>
+            <li class="list-group-item" onclick="openTattooCategory('ownTattoos');">
+                <img class="img-fluid" src="../utils/img/death.png">
+                <p>Deine Tattoos</p>
+            </li>
+        </ul>
+        <ul class="list-group" id="TattooShopHUD-TattooList"></ul>
+    </div>
+
+    <!-- Kleiderschrank -->
+    <div id="ClothesStorageHUD">
+        <span onclick="closeClothesStorageCEF();"><i class="fas fa-times"></i></span>
+        <span onclick="openClothesStorageMenuPoint('Home');"><i class="fas fa-home"></i></span>
+        <p class="title" style="margin-bottom: 0;">KLEIDERSCHRANK</p>
+        <ul id="ClothesStorageHUD-ContentList" class="list-group"></ul>
+        <ul id="ClothesStorageHUD-MainList" class="list-group">
+            <li class="list-group-item">
+                <img src="../utils/img/hat.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Kopfbedeckung</span>
+                <button onclick="openClothesStorageMenuPoint('Hat');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/mask.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Maskierungen</span>
+                <button onclick="openClothesStorageMenuPoint('Mask');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/cinema.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Brillen</span>
+                <button onclick="openClothesStorageMenuPoint('Glass');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/earring.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Ohrringe</span>
+                <button onclick="openClothesStorageMenuPoint('Earring');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/gold.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Nackenbekleidung</span>
+                <button onclick="openClothesStorageMenuPoint('Necklace');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/hidden.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Oberbekleidung</span>
+                <button onclick="openClothesStorageMenuPoint('Top');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/clothes.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Unterbekleidung</span>
+                <button onclick="openClothesStorageMenuPoint('Undershirt');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/muscle.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Körper</span>
+                <button onclick="openClothesStorageMenuPoint('Torso');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/vest.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Westen</span>
+                <button onclick="openClothesStorageMenuPoint('Armor');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/swimwear.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Hosen</span>
+                <button onclick="openClothesStorageMenuPoint('Leg');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/shoes.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Schuhe</span>
+                <button onclick="openClothesStorageMenuPoint('Feet');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/watch.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Uhren</span>
+                <button onclick="openClothesStorageMenuPoint('Watch');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+            <li class="list-group-item">
+                <img src="../utils/img/bracelet.png" class="img-fluid float-left" style="width: 32;">
+                <span class="float-left">Armbänder</span>
+                <button onclick="openClothesStorageMenuPoint('Bracelet');" class="btn btn-danger float-right"><i class="fas fa-play"></i></button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Kleiderladen HUD -->
+    <div id="ClothesShopHUD">
+        <span onclick="closeClothesShopCEF();"><i class="fas fa-times"></i></span>
+        <p class="title">KLEIDERLADEN</p>
+        <div id="ClothesShopHUD-HatBox" class="container">
+            <p class="title">Kopfbedeckung</p>
+            <p id="ClothesShopHUD-HatName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(1);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(1);" class="btn buybtn" id="ClothesShopHUD-HatPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(1);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-MaskBox" class="container">
+            <p class="title">Masken</p>
+            <p id="ClothesShopHUD-MaskName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(2);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(2);" class="btn buybtn" id="ClothesShopHUD-MaskPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(2);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-GlassesBox" class="container">
+            <p class="title">Brillen</p>
+            <p id="ClothesShopHUD-GlassesName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(3);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(3);" class="btn buybtn" id="ClothesShopHUD-GlassesPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(3);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-EarringBox" class="container">
+            <p class="title">Ohrringe</p>
+            <p id="ClothesShopHUD-EarringName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(4);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(4);" class="btn buybtn" id="ClothesShopHUD-EarringPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(4);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-NecklaceBox" class="container">
+            <p class="title">Nackenbekleidung</p>
+            <p id="ClothesShopHUD-NecklaceName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(5);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(5);" class="btn buybtn" id="ClothesShopHUD-NecklacePrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(5);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-TopBox" class="container">
+            <p class="title">Oberbekleidung</p>
+            <p id="ClothesShopHUD-TopName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(6);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(6);" class="btn buybtn" id="ClothesShopHUD-TopPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(6);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-UndershirtBox" class="container">
+            <p class="title">Unterbekleidung</p>
+            <p id="ClothesShopHUD-UndershirtName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(12);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(12);" class="btn buybtn" id="ClothesShopHUD-UndershirtPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(12);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-TorsoBox" class="container">
+            <p class="title">Körper</p>
+            <p id="ClothesShopHUD-TorsoName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(13);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(13);" class="btn buybtn" id="ClothesShopHUD-TorsoPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(13);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-VestBox" class="container">
+            <p class="title">Westen</p>
+            <p id="ClothesShopHUD-VestName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(7);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(7);" class="btn buybtn" id="ClothesShopHUD-VestPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(7);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-LegsBox" class="container">
+            <p class="title">Hosen</p>
+            <p id="ClothesShopHUD-LegsName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(8);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(8);" class="btn buybtn" id="ClothesShopHUD-LegsPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(8);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-ShoesBox" class="container">
+            <p class="title">Schuhe</p>
+            <p id="ClothesShopHUD-ShoesName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(9);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(9);" class="btn buybtn" id="ClothesShopHUD-ShoesPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(9);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-WatchBox" class="container">
+            <p class="title">Uhren</p>
+            <p id="ClothesShopHUD-WatchName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(10);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(10);" class="btn buybtn" id="ClothesShopHUD-WatchPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(10);"><i class="fa fa-angle-right"></i></button>
+            <hr>
+        </div>
+        <div id="ClothesShopHUD-BraceletBox" class="container">
+            <p class="title">Armbänder</p>
+            <p id="ClothesShopHUD-BraceletName" class="name"></p>
+            <button class="btn" onclick="ClothesShopSwitchLeft(11);"><i class="fa fa-angle-left"></i></button>
+            <button onclick="ClothesShopBuyItem(11);" class="btn buybtn" id="ClothesShopHUD-BraceletPrice">99999$</button>
+            <button class="btn" onclick="ClothesShopSwitchRight(11);"><i class="fa fa-angle-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Laptop -->
+    <div id="Laptop" class="Laptop">
+        <div class="LaptopSafezone">
+            <div id="Laptop-HomeApp" class="Laptop-Home-AreaBox">
+                <ul>
+                    <li id="Home-LSPDAppItem">
+                        <img src="../utils/img/siren.png">
+                        <span class="name">LSPD App</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Faction Manage HUD -->
+    <div id="FactionManageHUD">
+        <div class="FactionManageHUD">
+            <span onclick="closeFactionManageCef();"><i class="fas fa-times"></i></span>
+            <p class="title">VERWALTE DEINE FRAKTION</p>
+            <div class="container">
+                <p class="title">MITGLIEDERVERWALTUNG</p>
+                <ul id="FactionManageHUD-MemberList" class="list-group"></ul>
+            </div>
+            <hr>
+            <div class="container">
+                <p class="title">SPIELER EINLADEN</p>
+                <input id="FactionManageHUD-Invite" type="text" spellcheck="false" placeholder="Spielername...">
+                <button onclick="FactionManageInvite();" class="btn btn-danger"><i class="fas fa-check"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Labor HUD -->
+    <div id="laborHUD">
+        <div>
+            <span onclick="closeLaborCef();"><i class="fas fa-times"></i></span>
+            <p class="title">INVENTAR</p>
+            <ul class="list-group" id="LaborHUD-InvList">
+                <li class="list-group-item invitem" onclick="selectItemInv(this, 'Apfel');">
+                    <img src="../utils/img/inv/Apfel.png" style="width: 32;">
+                    <p>Apfel</p>
+                    <p>5x</p>
+                </li>
+                <li class="list-group-item invitem" onclick="selectItemInv(this, 'Birne');">
+                    <img src="../utils/img/inv/Apfel.png" style="width: 32;">
+                    <p>Birne</p>
+                    <p>3x</p>
+                </li>
+            </ul>
+            <hr>
+            <input id="invAmount" type="number" value="1" placeholder="Anzahl..">
+            <button class="btn btn-sm btn-success"><i class="fas fa-check" style="margin-right: 5px"></i>INS LABOR LEGEN</button>
+        </div>
+        <div>
+            <span onclick="closeLaborCef();"><i class="fas fa-times"></i></span>
+            <p class="title">LABOR</p>
+            <ul class="list-group" id="LaborHUD-LaborList">
+                <li class="list-group-item laboritem" onclick="selectItemLabor(this, 'Apfel');">
+                    <img src="../utils/img/inv/Apfel.png" style="width: 32;">
+                    <p>Apfel</p>
+                    <p>5x</p>
+                </li>
+                <li class="list-group-item laboritem" onclick="selectItemLabor(this, 'Birne');">
+                    <img src="../utils/img/inv/Apfel.png" style="width: 32;">
+                    <p>Birne</p>
+                    <p>3x</p>
+                </li>
+            </ul>
+            <hr>
+            <input id="laborAmount" type="number" value="1" placeholder="Anzahl..">
+            <button class="btn btn-sm btn-success"><i class="fas fa-check" style="margin-right: 5px"></i>INS INVENTAR LEGEN</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="../utils/bootstrap.min.js"></script>
+    <script src="../utils/mdb/js/mdb.min.js"></script>
+    <script src="../utils/anime.min.js"></script>
+    <script src="../utils/toastr.js"></script>
+    <script defer src="../utils/fontawesome/js/all.js"></script>
+</body>
+
+<script>
+    $(document).ready(function() {
+        alt.emit("Client:HUD:cefIsReady");
+        setTimeout(function() {
+            $("#moneyHUD").fadeTo(500, 1, function() {});
+        }, 1000);
+    });
+
+    function ShowNotification(notificationtype, message, time) {
+        toastr.options.progressBar = true;
+        switch (notificationtype) {
+            case 0:
+                break;
+            case 1:
+                //Info Notification
+                toastr.info(message, "", {
+                    timeOut: time
+                });
+                break;
+            case 2:
+                //Success Notification
+                toastr.success(message, "", {
+                    timeOut: time
+                });
+                break;
+            case 3:
+                //Warning Notification
+                toastr.warning(message, "", {
+                    timeOut: time
+                });
+                break;
+            case 4:
+                //Error Notification
+                toastr.error(message, "", {
+                    timeOut: time
+                });
+                break;
+        }
+    }
+
+    //Labor HUD
+    let $activeInvItem = undefined,
+        $activeLaborItem = undefined;
+
+    function openLaborHud(invItems, laborItems) {
+        invItems = JSON.parse(invItems);
+        laborItems = JSON.parse(laborItems);
+        let inventoryHTML = "",
+            laborHTML = "";
+
+        for (var i in invItems)
+            inventoryHTML += `<li class='list-group-item invitem' onclick='selectItemInv(this, "` + invItems[i].name + `");'><img src='../utils/img/inv/${invItems[i].pic}.png'><p>${invItems[i].name}</p><p>${invItems[i].amount}x</p></li>`;
+
+        for (var i in laborItems)
+            laborHTML += `<li class='list-group-item laboritem' onclick='selectItemLabor(this, "` + invItems[i].name + `");'><img src='../utils/img/inv/${invItems[i].pic}.png'><p>${invItems[i].name}</p><p>${invItems[i].amount}x</p></li>`;
+
+        $("#LaborHUD-InvList").html(inventoryHTML);
+        $("#LaborHUD-LaborList").html(laborHTML);
+
+        $("#laborHUD").fadeTo(250, 1, function() {
+            $("#laborHUD").show();
+        });
+    }
+
+    function selectItemInv(html, itemname) {
+        if (html == undefined || itemname.length <= 0) return;
+        $("li.invitem").removeClass("actives");
+        $(html).addClass("actives");
+        $activeInvItem = itemname;
+    }
+
+    function selectItemLabor(html, itemname) {
+        if (html == undefined || itemname.length <= 0) return;
+        $("li.laboritem").removeClass("actives");
+        $(html).addClass("actives");
+        $activeLaborItem = itemname;
+    }
+
+    function switchItemToInventory() {
+        if ($activeLaborItem == undefined) return;
+        let amount = $("#laborAmount").val();
+        if (amount <= 0) return;
+        alt.emit("Client:Labor:switchItemToInventory", $activeLaborItem, amount);
+        closeLaborCef();
+    }
+
+    function switchItemToLabor() {
+        if ($activeInvItem == undefined) return;
+        let amount = $("#invAmount").val();
+        if (amount <= 0) return;
+        alt.emit("Client:Labor:switchItemToLabor", $activeInvItem, amount);
+        closeLaborCef();
+    }
+
+    function closeLaborCef() {
+        $activeLaborItem = undefined;
+        $activeInvItem = undefined;
+        alt.emit("Client:Labor:destroy");
+        $("#laborHUD").fadeTo(250, 0, function() {
+            $("#laborHUD").hide();
+            $("li.laboritem").removeClass("actives");
+            $("li.invitem").removeClass("actives");
+            $("#laborAmount").val('1');
+            $("#invAmount").val('1');
+        });
+    }
+
+    // Rotation HUD
+    function rotatePlayer(htmlElem) {
+        let value = $(htmlElem).val();
+        alt.emit("Client:Utilities:setRotation", value);
+    }
+
+    // Faction Manage
+    function openFactionManager(factionId, memberJSON) {
+        let html = "";
+        memberJSON = JSON.parse(memberJSON);
+
+        for (var i in memberJSON) {
+            html += "<li class='list-group-item'><span>" + memberJSON[i].name + "</span><span>" + memberJSON[i].rankId + " - " + memberJSON[i].rankName + "</span><button onclick='FactionManagerAction(`rankup`, " + factionId + ", " + memberJSON[i].accountId + ");' class='btn btn-danger'><i class='fas fa-arrow-up'></i></button><button onclick='FactionManagerAction(`rankdown`, " + factionId + ", " + memberJSON[i].accountId + ");' class='btn btn-danger'><i class='fas fa-arrow-down'></i></button><button onclick='FactionManagerAction(`remove`, " + factionId + ", " + memberJSON[i].accountId + ");' class='btn btn-danger'><i class='fas fa-times'></i></button></li>";
+        }
+
+        $("#FactionManageHUD-MemberList").html(html);
+        $("#FactionManageHUD").fadeTo(250, 1, function() {
+            $("#FactionManageHUD").show();
+            $(".FactionManageHUD").show();
+        });
+    }
+
+    function FactionManageInvite() {
+        var targetName = $("#FactionManageHUD-Invite").val().replace(/^\s+|\s+$/g, "");
+        console.log(targetName);
+        if (targetName.length <= 0) return;
+        alt.emit("Client:FactionManage:inviteMember", targetName);
+    }
+
+    function FactionManagerAction(action, factionId, accountId) {
+        alt.emit("Client:FactionManage:doAction", action, factionId, accountId);
+        closeFactionManageCef();
+    }
+
+    function closeFactionManageCef() {
+        alt.emit("Client:FactionManage:closeCEF");
+        $("#FactionManageHUD").fadeTo(250, 0, function() {
+            $("#FactionManageHUD").hide();
+            $(".FactionManageHUD").hide();
+            $("#FactionManageHUD-MemberList").html('');
+        });
+    }
+
+    //Tattoo HUD
+    let tattooShopId = undefined,
+        globalTattooArray = [],
+        ownTattoos = [];
+
+    function SetTattooShopItems(array) {
+        array = JSON.parse(array);
+        for (var i in array) globalTattooArray.push(array[i]);
+    }
+
+    function openTattooHUD(shopId, ownTattoosJSON) {
+        tattooShopId = shopId;
+        ownTattoosJSON = JSON.parse(ownTattoosJSON);
+        for (var i in ownTattoosJSON) ownTattoos.push(ownTattoosJSON[i]);
+
+        $("#TattooShopHUD-TattooList").hide();
+        $("#TattooShopHUD-TattooList").html("");
+        $("#TattooShopHUD-HomeList").show();
+        $("#TattooShopHUD").fadeTo(250, 1, function() {
+            $("#TattooShopHUD").show();
+            $("#RotationHUD").fadeTo(1, 1, function() {
+                $("#RotationHUD").show();
+            });
+        });
+    }
+
+    function closeTattooShopCef() {
+        alt.emit("Client:TattooShop:closeShop");
+        $("#TattooShopHUD").fadeTo(250, 0, function() {
+            $("#TattooShopHUD").hide();
+            $("#RotationHUD").fadeTo(1, 0, function() {
+                $("#RotationHUD").hide();
+            });
+            $("#TattooShopHUD-TattooList").hide();
+            $("#TattooShopHUD-TattooList").html("");
+            $("#TattooShopHUD-HomeList").show();
+            tattooShopId = undefined;
+            ownTattoos = [];
+        });
+    }
+
+    function openTattooCategory(category) {
+        let html = "";
+        for (var i in globalTattooArray) {
+            if (globalTattooArray[i].part != category) continue;
+            html += "<li class='list-group-item'><span>" + globalTattooArray[i].name + "</span><span>" + globalTattooArray[i].price + "$</span><button onclick='previewTattoo(`" + globalTattooArray[i].nameHash + "`, `" + globalTattooArray[i].collection + "`);' class='blue btn btn-success'><i class='far fa-eye'></i></button><button onclick='buyTattoo(" + globalTattooArray[i].id + ");' class='btn btn-success'><i class='fas fa-dollar-sign'></i></button></li>";
+        }
+
+        if (category == "ownTattoos") {
+            for (var i in ownTattoos)
+                html += "<li class='list-group-item'><span>" + ownTattoos[i].name + "</span><span></span><button onclick='deleteTattoo(" + ownTattoos[i].tattooId + ");' class='btn btn-danger'><i class='fas fa-times'></i></button></li>";
+        }
+
+        $("#TattooShopHUD-TattooList").html(html);
+        $("#TattooShopHUD-HomeList").hide();
+        $("#TattooShopHUD-TattooList").show();
+    }
+
+    function deleteTattoo(id) {
+        if (id <= 0 || id == undefined) return;
+        alt.emit("Client:TattooShop:deleteTattoo", id);
+        closeTattooShopCef();
+    }
+
+    function buyTattoo(id) {
+        if (id <= 0 || id == undefined || tattooShopId <= 0 || tattooShopId == undefined) return;
+        alt.emit("Client:TattooShop:buyTattoo", tattooShopId, id);
+        closeTattooShopCef();
+    }
+
+    function previewTattoo(hash, collection) {
+        if (hash == undefined || collection == undefined) return;
+        alt.emit("Client:TattooShop:previewTattoo", hash, collection);
+    }
+
+    //Interaktionsmenü
+    let $interactType = "none",
+        $interactAction = "close",
+        type = 1,
+        radius = '18em',
+        start = -90;
+
+    function toggleInteractionMenu(typ, state, array) {
+        if (!state) {
+            $("#InteractionMenu").hide();
+            return;
+        }
+
+        $interactType = typ;
+        $("#InteractionMenu").html(array);
+        iItems = $("li.interactitem");
+
+        iItems.mouseleave(function() {
+            $interactAction = "close";
+            $("#InteractionMenu-Title").html("Schließen");
+        });
+
+        iItems.mouseenter(function() {
+            $interactAction = $(this).attr("data-action");
+            interactString = $(this).attr("data-actionstring");
+            $("#InteractionMenu-Title").html($(this).attr("data-actionstring"));
+        });
+
+        $("#InteractionMenu").show();
+        transformInteractMenuItems();
+    }
+
+    function transformInteractMenuItems() {
+        var $items = $('li.interactitem:not(:first-child)'),
+            numberOfItems = (type === 1) ? $items.length : $items.length - 1,
+            slice = 360 * type / numberOfItems;
+
+        $items.each(function(i) {
+            var $self = $(this),
+                rotate = slice * i + start,
+                rotateReverse = rotate * -1;
+
+            $self.css({
+                'transform': 'rotate(' + rotate + 'deg) translate(' + radius + ') rotate(' + rotateReverse + 'deg)'
+            });
+        });
+    }
+
+    //Kleiderschrank
+    let globalClothesStorageArray = [],
+        $playerGender = null;
+
+    function SetClothesStorageItems(json) {
+        json = JSON.parse(json);
+        for (var i in json) globalClothesStorageArray.push(json[i]);
+    }
+
+    function openClothesStorageMenuPoint(clothesType) {
+        if (clothesType == "Home") {
+            $("#ClothesStorageHUD-ContentList").hide();
+            $("#ClothesStorageHUD-MainList").show();
+            return;
+        }
+        let html = "<li class='list-group-item'><span class='float-left'>Leer</span><button onclick='switchClothes(`" + clothesType + "`, `Leer`);' class='btn btn-danger float-right'><i class='fas fa-tshirt'></i></button><button style='margin-right: 8px;' onclick='previewClothes(true, `" + clothesType + "`, 0, 0);' class='btn btn-danger float-right'><i class='fas fa-eye'></i></button></li>";
+        for (var i in globalClothesStorageArray) {
+            if (globalClothesStorageArray[i].type != clothesType) continue;
+            html += "<li class='list-group-item'><span class='float-left'>" + globalClothesStorageArray[i].clothesName + "</span><button onclick='switchClothes(`" + clothesType + "`, `" + globalClothesStorageArray[i].clothesName + "`);' class='btn btn-danger float-right'><i class='fas fa-tshirt'></i></button><button style='margin-right: 8px;' onclick='previewClothes(false, `" + globalClothesStorageArray[i].type + "`, " + globalClothesStorageArray[i].draw + ", " + globalClothesStorageArray[i].tex + ");' class='btn btn-danger float-right'><i class='fas fa-eye'></i></button></li>";
+        }
+        $("#ClothesStorageHUD-ContentList").html(html);
+
+        $("#ClothesStorageHUD-MainList").hide();
+        $("#ClothesStorageHUD-ContentList").show();
+    }
+
+    function switchClothes(type, clothesName) {
+        if (clothesName == "Leer") clothesName = "None";
+        alt.emit("Client:ClothesStorage:SwitchClothes", type, clothesName);
+    }
+
+    function previewClothes(shouldBeCleared, type, draw, tex) {
+        switch (type) {
+            case "Hat":
+                if (shouldBeCleared) alt.emit("Client:ClothesShop:clearAccessory", 0);
+                else alt.emit("Client:ClothesShop:setAccessory", 0, draw, tex);
+                break;
+            case "Mask":
+                if (shouldBeCleared) alt.emit("Client:ClothesShop:setClothes", 1, 0, 0);
+                else alt.emit("Client:ClothesShop:setClothes", 1, draw, tex);
+                break;
+            case "Glass":
+                if (shouldBeCleared) alt.emit("Client:ClothesShop:clearAccessory", 1);
+                else alt.emit("Client:ClothesShop:setAccessory", 1, draw, tex);
+                break;
+            case "Earring":
+                if (shouldBeCleared) alt.emit("Client:ClothesShop:clearAccessory", 2);
+                else alt.emit("Client:ClothesShop:setAccessory", 2, draw, tex);
+                break;
+            case "Necklace":
+                if (shouldBeCleared) alt.emit("Client:ClothesShop:setClothes", 7, 0, 0);
+                else alt.emit("Client:ClothesShop:setClothes", 7, draw, tex);
+                break;
+            case "Top":
+                if (shouldBeCleared) alt.emit("Client:ClothesShop:setClothes", 11, 15, 0);
+                else alt.emit("Client:ClothesShop:setClothes", 11, draw, tex);
+                break;
+            case "Undershirt":
+                if (shouldBeCleared) {
+                    if ($playerGender == 0) alt.emit("Client:ClothesShop:setClothes", 8, 57, 0);
+                    else if ($playerGender == 1) alt.emit("Client:ClothesShop:setClothes", 8, 34, 0);
+                } else alt.emit("Client:ClothesShop:setClothes", 8, draw, tex);
+                break;
+            case "Torso":
+                if (shouldBeCleared) alt.emit("Client:ClothesShop:setClothes", 3, 15, 0);
+                else alt.emit("Client:ClothesShop:setClothes", 3, draw, tex);
+                break;
+            case "Armor":
+                if (shouldBeCleared) alt.emit("Client:ClothesShop:setClothes", 9, 0, 0);
+                else alt.emit("Client:ClothesShop:setClothes", 9, draw, tex);
+                break;
+            case "Leg":
+                if (shouldBeCleared) {
+                    if ($playerGender == 0) alt.emit("Client:ClothesShop:setClothes", 4, 21, 0);
+                    else if ($playerGender == 1) alt.emit("Client:ClothesShop:setClothes", 4, 15, 0);
+                } else alt.emit("Client:ClothesShop:setClothes", 4, draw, tex);
+                break;
+            case "Feet":
+                if (shouldBeCleared) {
+                    if ($playerGender == 0) alt.emit("Client:ClothesShop:setClothes", 6, 34, 0);
+                    else if ($playerGender == 1) alt.emit("Client:ClothesShop:setClothes", 6, 35, 0);
+                } else alt.emit("Client:ClothesShop:setClothes", 6, draw, tex);
+                break;
+            case "Watch":
+                if (shouldBeCleared) alt.emit("Client:ClothesShop:clearAccessory", 6);
+                else alt.emit("Client:ClothesShop:setAccessory", 6, draw, tex);
+                break;
+            case "Bracelet":
+                if (shouldBeCleared) alt.emit("Client:ClothesShop:clearAccessory", 7);
+                else alt.emit("Client:ClothesShop:setAccessory", 7, draw, tex);
+                break;
+        }
+    }
+
+    function openClothesStorageHUD(gender) {
+        $playerGender = gender;
+        $("#ClothesStorageHUD-ContentList").hide();
+        $("#ClothesStorageHUD-MainList").show();
+        $("#ClothesStorageHUD").fadeTo(250, 1, function() {
+            $("#ClothesStorageHUD").show();
+            $("#RotationHUD").fadeTo(1, 1, function() {
+                $("#RotationHUD").show();
+            });
+        });
+    }
+
+    function closeClothesStorageCEF() {
+        alt.emit("Client:Utilities:RequestCurrentSkin");
+        $("#ClothesStorageHUD").fadeOut(500, function() {
+            $("#ClothesStorageHUD").hide();
+            $("#RotationHUD").fadeTo(1, 0, function() {
+                $("#RotationHUD").hide();
+            });
+            $("#ClothesStorageHUD-ContentList").html("");
+        });
+        alt.emit("Client:ClothesStorage:destroyCEF");
+        globalClothesStorageArray = [];
+        $playerGender = null;
+    }
+
+    //Kleiderladen
+    let clothesShopHats = [],
+        clothesShopMasks = [],
+        clothesShopGlasses = [],
+        clothesShopEarrings = [],
+        clothesShopNecklaces = [],
+        clothesShopTops = [],
+        clothesShopTorsos = [],
+        clothesShopUndershirts = [],
+        clothesShopVests = [],
+        clothesShopPants = [],
+        clothesShopShoes = [],
+        clothesShopWatches = [],
+        clothesShopBracelets = [],
+        clothesShopHatIndex = 0,
+        clothesShopMaskIndex = 0,
+        clothesShopGlassIndex = 0,
+        clothesShopEarringIndex = 0,
+        clothesShopNecklaceIndex = 0,
+        clothesShopTopIndex = 0,
+        clothesShopTorsoIndex = 0,
+        clothesShopUndershirtIndex = 0,
+        clothesShopVestIndex = 0,
+        clothesShopPantsIndex = 0,
+        clothesShopShoesIndex = 0,
+        clothesShopWatchIndex = 0,
+        clothesShopBraceletIndex = 0,
+        globalClothesShopId = undefined,
+        globalClothesShopArray = [];
+
+    function SetClothesShopItems(items) {
+        items = JSON.parse(items);
+        for (var i in items) {
+            globalClothesShopArray.push(items[i]);
+        }
+    }
+
+    function SetClothesShopContent(shopId) {
+        clothesShopHats = [], clothesShopTorsos = [], clothesShopUndershirts = [], clothesShopMasks = [], clothesShopGlasses = [], clothesShopEarrings = [], clothesShopNecklaces = [], clothesShopTops = [], clothesShopVests = [], clothesShopPants = [], clothesShopShoes = [], clothesShopWatches = [], clothesShopBracelets = [], globalClothesShopId = undefined;
+        globalClothesShopId = shopId;
+
+        for (var i in globalClothesShopArray) {
+            if (globalClothesShopArray[i].type == "Hat") clothesShopHats.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Mask") clothesShopMasks.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Glass") clothesShopGlasses.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Earring") clothesShopEarrings.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Necklace") clothesShopNecklaces.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Top") clothesShopTops.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Torso") clothesShopTorsos.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Undershirt") clothesShopUndershirts.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Armor") clothesShopVests.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Leg") clothesShopPants.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Feet") clothesShopShoes.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Watch") clothesShopWatches.push(globalClothesShopArray[i]);
+            else if (globalClothesShopArray[i].type == "Bracelet") clothesShopBracelets.push(globalClothesShopArray[i]);
+        }
+
+        if (clothesShopHats.length > 0) $("#ClothesShopHUD-HatBox").show();
+        else $("#ClothesShopHUD-HatBox").hide();
+
+        if (clothesShopMasks.length > 0) $("#ClothesShopHUD-MaskBox").show();
+        else $("#ClothesShopHUD-MaskBox").hide();
+
+        if (clothesShopGlasses.length > 0) $("#ClothesShopHUD-GlassesBox").show();
+        else $("#ClothesShopHUD-GlassesBox").hide();
+
+        if (clothesShopEarrings.length > 0) $("#ClothesShopHUD-EarringBox").show();
+        else $("#ClothesShopHUD-EarringBox").hide();
+
+        if (clothesShopNecklaces.length > 0) $("#ClothesShopHUD-NecklaceBox").show();
+        else $("#ClothesShopHUD-NecklaceBox").hide();
+
+        if (clothesShopTops.length > 0) $("#ClothesShopHUD-TopBox").show();
+        else $("#ClothesShopHUD-TopBox").hide();
+
+        if (clothesShopUndershirts.length > 0) $("#ClothesShopHUD-UndershirtBox").show();
+        else $("#ClothesShopHUD-UndershirtBox").hide();
+
+        if (clothesShopTorsos.length > 0) $("#ClothesShopHUD-TorsoBox").show();
+        else $("#ClothesShopHUD-TorsoBox").hide();
+
+        if (clothesShopVests.length > 0) $("#ClothesShopHUD-VestBox").show();
+        else $("#ClothesShopHUD-VestBox").hide();
+
+        if (clothesShopPants.length > 0) $("#ClothesShopHUD-LegsBox").show();
+        else $("#ClothesShopHUD-LegsBox").hide();
+
+        if (clothesShopShoes.length > 0) $("#ClothesShopHUD-ShoesBox").show();
+        else $("#ClothesShopHUD-ShoesBox").hide();
+
+        if (clothesShopWatches.length > 0) $("#ClothesShopHUD-WatchBox").show();
+        else $("#ClothesShopHUD-WatchBox").hide();
+
+        if (clothesShopBracelets.length > 0) $("#ClothesShopHUD-BraceletBox").show();
+        else $("#ClothesShopHUD-BraceletBox").hide();
+
+        $("#ClothesShopHUD-HatName").html(`-`);
+        $("#ClothesShopHUD-MaskName").html(`-`);
+        $("#ClothesShopHUD-GlassesName").html(`-`);
+        $("#ClothesShopHUD-EarringName").html(`-`);
+        $("#ClothesShopHUD-NecklaceName").html(`-`);
+        $("#ClothesShopHUD-TopName").html(`-`);
+        $("#ClothesShopHUD-UndershirtName").html(`-`);
+        $("#ClothesShopHUD-TorsoName").html(`-`);
+        $("#ClothesShopHUD-VestName").html(`-`);
+        $("#ClothesShopHUD-LegsName").html(`-`);
+        $("#ClothesShopHUD-ShoesName").html(`-`);
+        $("#ClothesShopHUD-WatchName").html(`-`);
+        $("#ClothesShopHUD-BraceletName").html(`-`);
+
+        $("#ClothesShopHUD-HatPrice").html(`???`);
+        $("#ClothesShopHUD-MaskPrice").html(`???`);
+        $("#ClothesShopHUD-GlassesPrice").html(`???`);
+        $("#ClothesShopHUD-EarringPrice").html(`???`);
+        $("#ClothesShopHUD-NecklacePrice").html(`???`);
+        $("#ClothesShopHUD-TopPrice").html(`???`);
+        $("#ClothesShopHUD-UndershirtPrice").html(`???`);
+        $("#ClothesShopHUD-TorsoPrice").html(`???`);
+        $("#ClothesShopHUD-VestPrice").html(`???`);
+        $("#ClothesShopHUD-LegsPrice").html(`???`);
+        $("#ClothesShopHUD-ShoesPrice").html(`???`);
+        $("#ClothesShopHUD-WatchPrice").html(`???`);
+        $("#ClothesShopHUD-BraceletPrice").html(`???`);
+        $("#ClothesShopHUD").fadeTo(1000, 1, function() {
+            $("#ClothesShopHUD").show();
+            $("#RotationHUD").show();
+        });
+    }
+
+    function ClothesShopSwitchLeft(type) {
+        switch (type) {
+            case 1:
+                clothesShopHatIndex--;
+                if (clothesShopHatIndex < 0) clothesShopHatIndex = clothesShopHats.length - 1;
+                $("#ClothesShopHUD-HatName").html(`${clothesShopHats[clothesShopHatIndex].clothesName} (${clothesShopHatIndex}/${clothesShopHats.length-1})`);
+                $("#ClothesShopHUD-HatPrice").html(`${clothesShopHats[clothesShopHatIndex].price}$`);
+                alt.emit("Client:ClothesShop:setAccessory", 0, clothesShopHats[clothesShopHatIndex].draw, clothesShopHats[clothesShopHatIndex].tex);
+                break;
+            case 2:
+                clothesShopMaskIndex--;
+                if (clothesShopMaskIndex < 0) clothesShopMaskIndex = clothesShopMasks.length - 1;
+                $("#ClothesShopHUD-MaskName").html(`${clothesShopMasks[clothesShopMaskIndex].clothesName} (${clothesShopMaskIndex}/${clothesShopMasks.length-1})`);
+                $("#ClothesShopHUD-MaskPrice").html(`${clothesShopMasks[clothesShopMaskIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 1, clothesShopMasks[clothesShopMaskIndex].draw, clothesShopMasks[clothesShopMaskIndex].tex);
+                break;
+            case 3:
+                clothesShopGlassIndex--;
+                if (clothesShopGlassIndex < 0) clothesShopGlassIndex = clothesShopGlasses.length - 1;
+                $("#ClothesShopHUD-GlassesName").html(`${clothesShopGlasses[clothesShopGlassIndex].clothesName} (${clothesShopGlassIndex}/${clothesShopGlasses.length-1})`);
+                $("#ClothesShopHUD-GlassesPrice").html(`${clothesShopGlasses[clothesShopGlassIndex].price}$`);
+                alt.emit("Client:ClothesShop:setAccessory", 1, clothesShopGlasses[clothesShopGlassIndex].draw, clothesShopGlasses[clothesShopGlassIndex].tex);
+                break;
+            case 4:
+                clothesShopEarringIndex--;
+                if (clothesShopEarringIndex < 0) clothesShopEarringIndex = clothesShopEarrings.length - 1;
+                $("#ClothesShopHUD-EarringName").html(`${clothesShopEarrings[clothesShopEarringIndex].clothesName} (${clothesShopEarringIndex}/${clothesShopEarrings.length-1})`);
+                $("#ClothesShopHUD-EarringPrice").html(`${clothesShopEarrings[clothesShopEarringIndex].price}$`);
+                alt.emit("Client:ClothesShop:setAccessory", 2, clothesShopEarrings[clothesShopEarringIndex].draw, clothesShopEarrings[clothesShopEarringIndex].tex);
+                break;
+            case 5:
+                clothesShopNecklaceIndex--;
+                if (clothesShopNecklaceIndex < 0) clothesShopNecklaceIndex = clothesShopNecklaces.length - 1;
+                $("#ClothesShopHUD-NecklaceName").html(`${clothesShopNecklaces[clothesShopNecklaceIndex].clothesName} (${clothesShopNecklaceIndex}/${clothesShopNecklaces.length-1})`);
+                $("#ClothesShopHUD-NecklacePrice").html(`${clothesShopNecklaces[clothesShopNecklaceIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 7, clothesShopNecklaces[clothesShopNecklaceIndex].draw, clothesShopNecklaces[clothesShopNecklaceIndex].tex);
+                break;
+            case 6:
+                clothesShopTopIndex--;
+                if (clothesShopTopIndex < 0) clothesShopTopIndex = clothesShopTops.length - 1;
+                $("#ClothesShopHUD-TopName").html(`${clothesShopTops[clothesShopTopIndex].clothesName} (${clothesShopTopIndex}/${clothesShopTops.length-1})`);
+                $("#ClothesShopHUD-TopPrice").html(`${clothesShopTops[clothesShopTopIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 11, clothesShopTops[clothesShopTopIndex].draw, clothesShopTops[clothesShopTopIndex].tex);
+                break;
+            case 7:
+                clothesShopVestIndex--;
+                if (clothesShopVestIndex < 0) clothesShopVestIndex = clothesShopVests.length - 1;
+                $("#ClothesShopHUD-VestName").html(`${clothesShopVests[clothesShopVestIndex].clothesName} (${clothesShopVestIndex}/${clothesShopVests.length-1})`);
+                $("#ClothesShopHUD-VestPrice").html(`${clothesShopVests[clothesShopVestIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 9, clothesShopVests[clothesShopVestIndex].draw, clothesShopVests[clothesShopVestIndex].tex);
+                break;
+            case 8:
+                clothesShopPantsIndex--;
+                if (clothesShopPantsIndex < 0) clothesShopPantsIndex = clothesShopPants.length - 1;
+                $("#ClothesShopHUD-LegsName").html(`${clothesShopPants[clothesShopPantsIndex].clothesName} (${clothesShopPantsIndex}/${clothesShopPants.length-1})`);
+                $("#ClothesShopHUD-LegsPrice").html(`${clothesShopPants[clothesShopPantsIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 4, clothesShopPants[clothesShopPantsIndex].draw, clothesShopPants[clothesShopPantsIndex].tex);
+                break;
+            case 9:
+                clothesShopShoesIndex--;
+                if (clothesShopShoesIndex < 0) clothesShopShoesIndex = clothesShopShoes.length - 1;
+                $("#ClothesShopHUD-ShoesName").html(`${clothesShopShoes[clothesShopShoesIndex].clothesName} (${clothesShopShoesIndex}/${clothesShopShoes.length-1})`);
+                $("#ClothesShopHUD-ShoesPrice").html(`${clothesShopShoes[clothesShopShoesIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 6, clothesShopShoes[clothesShopShoesIndex].draw, clothesShopShoes[clothesShopShoesIndex].tex);
+                break;
+            case 10:
+                clothesShopWatchIndex--;
+                if (clothesShopWatchIndex < 0) clothesShopWatchIndex = clothesShopWatches.length - 1;
+                $("#ClothesShopHUD-WatchName").html(`${clothesShopWatches[clothesShopWatchIndex].clothesName} (${clothesShopWatchIndex}/${clothesShopWatches.length-1})`);
+                $("#ClothesShopHUD-WatchPrice").html(`${clothesShopWatches[clothesShopWatchIndex].price}$`);
+                alt.emit("Client:ClothesShop:setAccessory", 6, clothesShopWatches[clothesShopWatchIndex].draw, clothesShopWatches[clothesShopWatchIndex].tex);
+                break;
+            case 11:
+                clothesShopBraceletIndex--;
+                if (clothesShopBraceletIndex < 0) clothesShopBraceletIndex = clothesShopBracelets.length - 1;
+                $("#ClothesShopHUD-BraceletName").html(`${clothesShopBracelets[clothesShopBraceletIndex].clothesName} (${clothesShopBraceletIndex}/${clothesShopBracelets.length-1})`);
+                $("#ClothesShopHUD-BraceletPrice").html(`${clothesShopBracelets[clothesShopBraceletIndex].price}$`);
+                alt.emit("Client:ClothesShop:setAccessory", 7, clothesShopBracelets[clothesShopBraceletIndex].draw, clothesShopBracelets[clothesShopBraceletIndex].tex);
+                break;
+            case 12:
+                clothesShopUndershirtIndex--;
+                if (clothesShopUndershirtIndex < 0) clothesShopUndershirtIndex = clothesShopUndershirts.length - 1;
+                $("#ClothesShopHUD-UndershirtName").html(`${clothesShopUndershirts[clothesShopUndershirtIndex].clothesName} (${clothesShopUndershirtIndex}/${clothesShopUndershirts.length-1})`);
+                $("#CClothesShopHUD-UndershirtPrice").html(`${clothesShopUndershirts[clothesShopUndershirtIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 8, clothesShopUndershirts[clothesShopUndershirtIndex].draw, clothesShopUndershirts[clothesShopUndershirtIndex].tex);
+                break;
+            case 13:
+                clothesShopTorsoIndex--;
+                if (clothesShopTorsoIndex < 0) clothesShopTorsoIndex = clothesShopTorsos.length - 1;
+                $("#ClothesShopHUD-TorsoName").html(`${clothesShopTorsos[clothesShopTorsoIndex].clothesName} (${clothesShopTorsoIndex}/${clothesShopTorsos.length-1})`);
+                $("#ClothesShopHUD-TorsoPrice").html(`${clothesShopTorsos[clothesShopTorsoIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 3, clothesShopTorsos[clothesShopTorsoIndex].draw, clothesShopTorsos[clothesShopTorsoIndex].tex);
+                break;
+        }
+    }
+
+    function ClothesShopSwitchRight(type) {
+        switch (type) {
+            case 1:
+                clothesShopHatIndex++;
+                if (clothesShopHatIndex > clothesShopHats.length - 1) clothesShopHatIndex = 0;
+                $("#ClothesShopHUD-HatName").html(`${clothesShopHats[clothesShopHatIndex].clothesName} (${clothesShopHatIndex}/${clothesShopHats.length-1})`);
+                $("#ClothesShopHUD-HatPrice").html(`${clothesShopHats[clothesShopHatIndex].price}$`);
+                alt.emit("Client:ClothesShop:setAccessory", 0, clothesShopHats[clothesShopHatIndex].draw, clothesShopHats[clothesShopHatIndex].tex);
+                break;
+            case 2:
+                clothesShopMaskIndex++;
+                if (clothesShopMaskIndex > clothesShopMasks.length - 1) clothesShopMaskIndex = 0;
+                $("#ClothesShopHUD-MaskName").html(`${clothesShopMasks[clothesShopMaskIndex].clothesName} (${clothesShopMaskIndex}/${clothesShopMasks.length-1})`);
+                $("#ClothesShopHUD-MaskPrice").html(`${clothesShopMasks[clothesShopMaskIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 1, clothesShopMasks[clothesShopMaskIndex].draw, clothesShopMasks[clothesShopMaskIndex].tex);
+                break;
+            case 3:
+                clothesShopGlassIndex++;
+                if (clothesShopGlassIndex > clothesShopGlasses.length - 1) clothesShopGlassIndex = 0;
+                $("#ClothesShopHUD-GlassesName").html(`${clothesShopGlasses[clothesShopGlassIndex].clothesName} (${clothesShopGlassIndex}/${clothesShopGlasses.length-1})`);
+                $("#ClothesShopHUD-GlassesPrice").html(`${clothesShopGlasses[clothesShopGlassIndex].price}$`);
+                alt.emit("Client:ClothesShop:setAccessory", 1, clothesShopGlasses[clothesShopGlassIndex].draw, clothesShopGlasses[clothesShopGlassIndex].tex);
+                break;
+            case 4:
+                clothesShopEarringIndex++;
+                if (clothesShopEarringIndex > clothesShopEarrings.length - 1) clothesShopEarringIndex = 0;
+                $("#ClothesShopHUD-EarringName").html(`${clothesShopEarrings[clothesShopEarringIndex].clothesName} (${clothesShopEarringIndex}/${clothesShopEarrings.length-1})`);
+                $("#ClothesShopHUD-EarringPrice").html(`${clothesShopEarrings[clothesShopEarringIndex].price}$`);
+                alt.emit("Client:ClothesShop:setAccessory", 2, clothesShopEarrings[clothesShopEarringIndex].draw, clothesShopEarrings[clothesShopEarringIndex].tex);
+                break;
+            case 5:
+                clothesShopNecklaceIndex++;
+                if (clothesShopNecklaceIndex > clothesShopNecklaces.length - 1) clothesShopNecklaceIndex = 0;
+                $("#ClothesShopHUD-NecklaceName").html(`${clothesShopNecklaces[clothesShopNecklaceIndex].clothesName} (${clothesShopNecklaceIndex}/${clothesShopNecklaces.length-1})`);
+                $("#ClothesShopHUD-NecklacePrice").html(`${clothesShopNecklaces[clothesShopNecklaceIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 7, clothesShopNecklaces[clothesShopNecklaceIndex].draw, clothesShopNecklaces[clothesShopNecklaceIndex].tex);
+                break;
+            case 6:
+                clothesShopTopIndex++;
+                if (clothesShopTopIndex > clothesShopTops.length - 1) clothesShopTopIndex = 0;
+                $("#ClothesShopHUD-TopName").html(`${clothesShopTops[clothesShopTopIndex].clothesName} (${clothesShopTopIndex}/${clothesShopTops.length-1})`);
+                $("#ClothesShopHUD-TopPrice").html(`${clothesShopTops[clothesShopTopIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 11, clothesShopTops[clothesShopTopIndex].draw, clothesShopTops[clothesShopTopIndex].tex);
+                break;
+            case 7:
+                clothesShopVestIndex++;
+                if (clothesShopVestIndex > clothesShopVests.length - 1) clothesShopVestIndex = 0;
+                $("#ClothesShopHUD-VestName").html(`${clothesShopVests[clothesShopVestIndex].clothesName} (${clothesShopVestIndex}/${clothesShopVests.length-1})`);
+                $("#ClothesShopHUD-VestPrice").html(`${clothesShopVests[clothesShopVestIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 9, clothesShopVests[clothesShopVestIndex].draw, clothesShopVests[clothesShopVestIndex].tex);
+                break;
+            case 8:
+                clothesShopPantsIndex++;
+                if (clothesShopPantsIndex > clothesShopPants.length - 1) clothesShopPantsIndex = 0;
+                $("#ClothesShopHUD-LegsName").html(`${clothesShopPants[clothesShopPantsIndex].clothesName} (${clothesShopPantsIndex}/${clothesShopPants.length-1})`);
+                $("#ClothesShopHUD-LegsPrice").html(`${clothesShopPants[clothesShopPantsIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 4, clothesShopPants[clothesShopPantsIndex].draw, clothesShopPants[clothesShopPantsIndex].tex);
+                break;
+            case 9:
+                clothesShopShoesIndex++;
+                if (clothesShopShoesIndex > clothesShopShoes.length - 1) clothesShopShoesIndex = 0;
+                $("#ClothesShopHUD-ShoesName").html(`${clothesShopShoes[clothesShopShoesIndex].clothesName} (${clothesShopShoesIndex}/${clothesShopShoes.length-1})`);
+                $("#ClothesShopHUD-ShoesPrice").html(`${clothesShopShoes[clothesShopShoesIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 6, clothesShopShoes[clothesShopShoesIndex].draw, clothesShopShoes[clothesShopShoesIndex].tex);
+                break;
+            case 10:
+                clothesShopWatchIndex++;
+                if (clothesShopWatchIndex > clothesShopWatches.length - 1) clothesShopWatchIndex = 0;
+                $("#ClothesShopHUD-WatchName").html(`${clothesShopWatches[clothesShopWatchIndex].clothesName} (${clothesShopWatchIndex}/${clothesShopWatches.length-1})`);
+                $("#ClothesShopHUD-WatchPrice").html(`${clothesShopWatches[clothesShopWatchIndex].price}$`);
+                alt.emit("Client:ClothesShop:setAccessory", 6, clothesShopWatches[clothesShopWatchIndex].draw, clothesShopWatches[clothesShopWatchIndex].tex);
+                break;
+            case 11:
+                clothesShopBraceletIndex++;
+                if (clothesShopBraceletIndex > clothesShopBracelets.length - 1) clothesShopBraceletIndex = 0;
+                $("#ClothesShopHUD-BraceletName").html(`${clothesShopBracelets[clothesShopBraceletIndex].clothesName} (${clothesShopBraceletIndex}/${clothesShopBracelets.length-1})`);
+                $("#ClothesShopHUD-BraceletPrice").html(`${clothesShopBracelets[clothesShopBraceletIndex].price}$`);
+                alt.emit("Client:ClothesShop:setAccessory", 7, clothesShopBracelets[clothesShopBraceletIndex].draw, clothesShopBracelets[clothesShopBraceletIndex].tex);
+                break;
+            case 12:
+                clothesShopUndershirtIndex++;
+                if (clothesShopUndershirtIndex > clothesShopUndershirts.length - 1) clothesShopUndershirtIndex = 0;
+                $("#ClothesShopHUD-UndershirtName").html(`${clothesShopUndershirts[clothesShopUndershirtIndex].clothesName} (${clothesShopUndershirtIndex}/${clothesShopUndershirts.length-1})`);
+                $("#ClothesShopHUD-UndershirtPrice").html(`${clothesShopUndershirts[clothesShopUndershirtIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 8, clothesShopUndershirts[clothesShopUndershirtIndex].draw, clothesShopUndershirts[clothesShopUndershirtIndex].tex);
+                break;
+            case 13:
+                clothesShopTorsoIndex++;
+                if (clothesShopTorsoIndex > clothesShopTorsos.length - 1) clothesShopTorsoIndex = 0;
+                $("#ClothesShopHUD-TorsoName").html(`${clothesShopTorsos[clothesShopTorsoIndex].clothesName} (${clothesShopTorsoIndex}/${clothesShopTorsos.length-1})`);
+                $("#ClothesShopHUD-TorsoPrice").html(`${clothesShopTorsos[clothesShopTorsoIndex].price}$`);
+                alt.emit("Client:ClothesShop:setClothes", 3, clothesShopTorsos[clothesShopTorsoIndex].draw, clothesShopTorsos[clothesShopTorsoIndex].tex);
+                break;
+        }
+    }
+
+    function ClothesShopBuyItem(type) {
+        if (type == 0 || type == undefined) return;
+        switch (type) {
+            case 1:
+                if (clothesShopHats.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopHats[clothesShopHatIndex].clothesName);
+                break;
+            case 2:
+                if (clothesShopMasks.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopMasks[clothesShopMaskIndex].clothesName);
+                break;
+            case 3:
+                if (clothesShopGlasses.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopGlasses[clothesShopGlassIndex].clothesName);
+                break;
+            case 4:
+                if (clothesShopEarrings.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopEarrings[clothesShopEarringIndex].clothesName);
+                break;
+            case 5:
+                if (clothesShopNecklaces.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopNecklaces[clothesShopNecklaceIndex].clothesName);
+                break;
+            case 6:
+                if (clothesShopTops.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopTops[clothesShopTopIndex].clothesName);
+                break;
+            case 7:
+                if (clothesShopVests.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopVests[clothesShopVestIndex].clothesName);
+                break;
+            case 8:
+                if (clothesShopPants.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopPants[clothesShopPantsIndex].clothesName);
+                break;
+            case 9:
+                if (clothesShopShoes.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopShoes[clothesShopShoesIndex].clothesName);
+                break;
+            case 10:
+                if (clothesShopWatches.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopWatches[clothesShopWatchIndex].clothesName);
+                break;
+            case 11:
+                if (clothesShopBracelets.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopBracelets[clothesShopBraceletIndex].clothesName);
+                break;
+            case 12:
+                if (clothesShopUndershirts.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopUndershirts[clothesShopUndershirtIndex].clothesName);
+                break;
+            case 13:
+                if (clothesShopTorsos.length < 1) return;
+                alt.emit("Client:ClothesShop:buyItem", globalClothesShopId, clothesShopTorsos[clothesShopTorsoIndex].clothesName);
+                break;
+        }
+        closeClothesShopCEF();
+    }
+
+    function closeClothesShopCEF() {
+        alt.emit("Client:Utilities:RequestCurrentSkin");
+        $("#ClothesShopHUD").fadeOut(500, function() {
+            $("#ClothesShopHUD").hide();
+            $("#RotationHUD").hide();
+            clothesShopHats = [], clothesShopUndershirts = [], clothesShopMasks = [], clothesShopGlasses = [], clothesShopEarrings = [], clothesShopNecklaces = [], clothesShopTops = [], clothesShopVests = [], clothesShopPants = [], clothesShopShoes = [], clothesShopWatches = [], clothesShopBracelets = [], globalClothesShopId = undefined;
+            clothesShopHatIndex = 0, clothesShopUndershirtIndex = 0, clothesShopMaskIndex = 0, clothesShopGlassIndex = 0, clothesShopEarringIndex = 0, clothesShopNecklaceIndex = 0, clothesShopTopIndex = 0, clothesShopVestIndex = 0, clothesShopPantsIndex = 0, clothesShopShoesIndex = 0, clothesShopWatchIndex = 0, clothesShopBraceletIndex = 0;
+        });
+        alt.emit("Client:ClothesShop:destroyCEF");
+        globalClothesShopArray = [];
+    }
+
+    //ATM
+    $globalATMMoney = undefined;
+
+    function openATM(money) {
+        $globalATMMoney = money;
+        $("#atmHUD-balance").html(`${numberWithCommas(money)} $`);
+        $("#atmHUD").fadeTo(250, 1, function() {
+            $("#atmHUD").show();
+        });
+    }
+
+    function atmDepositMoney() {
+        var selectedMoney = $("#atmHUD-Deposit-Input").val();
+        if (selectedMoney <= 0 || selectedMoney == undefined) return;
+        closeATMCef();
+        alt.emit("Client:ATM:depositMoney", selectedMoney);
+    }
+
+    function atmWithdrawMoney() {
+        var selectedMoney = $("#atmHUD-Withdraw-Input").val();
+        if (selectedMoney <= 0 || selectedMoney == undefined || $globalATMMoney == undefined || selectedMoney > $globalATMMoney) return;
+        closeATMCef();
+        alt.emit("Client:ATM:withdrawMoney", selectedMoney);
+    }
+
+    function closeATMCef() {
+        alt.emit("Client:ATM:closeATM");
+        $("#atmHUD").fadeTo(250, 0, function() {
+            $("#atmHUD").hide();
+            ShowATMWindow("atmHUD-Home");
+            $("#atmHUD-Withdraw-Input").val("");
+            $("#atmHUD-Deposit-Input").val("");
+            $globalATMMoney = undefined;
+        });
+    }
+
+    function ShowATMWindow(newWindow) {
+        $("#atmHUD-Home").hide();
+        $("#atmHUD-Transactions").hide();
+        $("#atmHUD-Withdraw").hide();
+        $("#atmHUD-Deposit").hide();
+        $("#atmHUD-Withdraw-Input").val("");
+        $("#atmHUD-Deposit-Input").val("");
+        $(`#${newWindow}`).show();
+    }
+
+    // Money HUD
+    function updateMoneyHUD(currentMoney) {
+        $("#moneyHUD-currentMoney").html(`${numberWithCommas(currentMoney)} $`);
+    }
+
+    // Inventar
+    let $dropSelectedItem = undefined,
+        $dropMaxItemAmount = 0,
+        $useSelectedItem = undefined,
+        $useMaxItemAmount = 0;
+
+    function openInventory(weight, maxWeight, invItems) {
+        invItems = JSON.parse(invItems);
+        let html = "";
+
+        for (var i in invItems) {
+            html += `<li class='list-group-item'><div class='container text-left'><img src='../utils/img/inv/${invItems[i].itemPic}.png' style='width: 32px;'>` +
+                `<span>${invItems[i].itemName} (${invItems[i].itemAmount}x)</span><button class='btn btn-sm float-right' onclick='openDropItemModal("` + invItems[i].itemName + `", ${invItems[i].itemAmount});'>Wegwerfen</button><button onclick='openUseItemModal("` + invItems[i].itemName + `", ${invItems[i].itemAmount});' class='btn btn-sm float-right'>Benutzen</button></div></li>`;
+        }
+        $("#inventoryHUD-List").html(html);
+        $("#inventoryHUD-Weight").html(`${weight.toFixed(2)} / ${maxWeight}kg`);
+        $("#inventoryHUD-DropSelect").hide();
+        $("#inventoryHUD-DropSelect-Input").val("");
+        $("#inventoryHUD").fadeTo(250, 1, function() {
+            $("#inventoryHUD").show();
+        });
+    }
+
+    function openDropItemModal(itemName, maxAmount) {
+        $dropSelectedItem = itemName;
+        $dropMaxItemAmount = maxAmount;
+        $("#inventoryHUD-DropSelect").fadeTo(1, 1, function() {
+            $("#inventoryHUD-DropSelect").show();
+        });
+    }
+
+    function openUseItemModal(itemName, maxAmoumt) {
+        $useSelectedItem = itemName;
+        $useMaxItemAmount = maxAmoumt;
+        $("#inventoryHUD-UseSelect").fadeTo(1, 1, function() {
+            $("#inventoryHUD-UseSelect").show();
+        });
+    }
+
+    function useItem(itemName) {
+        var selectedAmount = $("#inventoryHUD-UseSelect-Input").val();
+        if (selectedAmount > $useMaxItemAmount || selectedAmount <= 0 || selectedAmount == undefined || $useMaxItemAmount == undefined || $useSelectedItem == undefined) return;
+        alt.emit("Client:Inventory:useItem", $useSelectedItem, selectedAmount);
+        closeInventory();
+    }
+
+    function dropItem() {
+        var selectedAmount = $("#inventoryHUD-DropSelect-Input").val();
+        if (selectedAmount > $dropMaxItemAmount || selectedAmount <= 0 || selectedAmount == undefined || $dropMaxItemAmount == undefined || $dropSelectedItem == undefined) return;
+        alt.emit("Client:Inventory:dropItem", $dropSelectedItem, selectedAmount);
+        closeInventory();
+    }
+
+    function closeInventory() {
+        $("#inventoryHUD-DropSelect").hide();
+        $("#inventoryHUD-UseSelect").hide();
+        $("#inventoryHUD").fadeTo(250, 0, function() {
+            $("#inventoryHUD").hide();
+            $("#inventoryHUD-List").html("");
+            $dropSelectedItem = undefined;
+            $dropMaxItemAmount = 0;
+        });
+    }
+
+    //Garage
+    function openGarage(garageId, garageVehs, outsideVehs) {
+        garageVehs = JSON.parse(garageVehs);
+        outsideVehs = JSON.parse(outsideVehs);
+        let html1 = "",
+            html2 = "";
+
+        for (var i in garageVehs) {
+            html1 += `<li class='list-group-item'><span class='name'>${garageVehs[i].name}</span><span class='name'>${garageVehs[i].plate}</span><button onclick='GarageInteraction(${garageId}, "take", ${garageVehs[i].id});' class='btn btn-success'><i class='fas fa-check'></i></button></li>`;
+        }
+
+        for (var i in outsideVehs) {
+            html2 += `<li class='list-group-item'><span class='name'>${outsideVehs[i].name}</span><span class='name'>${outsideVehs[i].plate}</span><button onclick='GarageInteraction(${garageId}, "storage", ${outsideVehs[i].id});' class='btn btn-success'><i class='fas fa-check'></i></button></li>`;
+        }
+
+        $("#GarageHUD-ParkedVehicles").html(html1);
+        $("#GarageHUD-OutsideVehicles").html(html2);
+        $("#GarageHUD-1").removeClass("active");
+        $("#GarageHUD-2").removeClass("active");
+        $("#GarageHUD-1").addClass("active");
+        $("#GarageHUD-ParkedVehicles").hide();
+        $("#GarageHUD-OutsideVehicles").show();
+        $("#GarageHUD").fadeTo(250, 1, function() {
+            $("#GarageHUD").show();
+        });
+    }
+
+    function GarageInteraction(garageId, action, vehicleId) {
+        if (garageId <= 0 || garageId == undefined || action == undefined || (action != "take" && action != "storage") || vehicleId <= 0 || vehicleId == undefined) return;
+        closeGarageCef();
+        switch (action) {
+            case "take":
+                alt.emit("Client:Garage:takeVehicle", garageId, vehicleId);
+                break;
+            case "storage":
+                alt.emit("Client:Garage:storeVehicle", garageId, vehicleId);
+                break;
+        }
+    }
+
+    function GarageHUDSwitchWindow(type, htmlElem) {
+        $("#GarageHUD-1").removeClass("active");
+        $("#GarageHUD-2").removeClass("active");
+        $(htmlElem).addClass("active");
+
+        switch (type) {
+            case "einparken":
+                $("#GarageHUD-ParkedVehicles").hide();
+                $("#GarageHUD-OutsideVehicles").show();
+                break;
+            case "ausparken":
+                $("#GarageHUD-OutsideVehicles").hide();
+                $("#GarageHUD-ParkedVehicles").show();
+                break;
+        }
+    }
+
+    function closeGarageCef() {
+        alt.emit("Client:Garage:closeGarage");
+        $("#GarageHUD").fadeTo(250, 0, function() {
+            $("#GarageHUD").hide();
+        });
+    }
+
+    //Vehicle Shop 
+    function closeVehicleShopCef() {
+        alt.emit("Client:VehicleShop:closeShop");
+        $("#VehicleShopHUD").fadeTo(250, 0, function() {
+            $("#VehicleShopHUD").hide();
+            $("#VehicleShopHUD-List").html("");
+        });
+    }
+
+    function openVehicleShop(shopId, shopItems) {
+        shopItems = JSON.parse(shopItems);
+        let html = "";
+
+        for (var i in shopItems) {
+            html += `<li class='list-group-item'><span>${shopItems[i].name}</span><span>${numberWithCommas(shopItems[i].price)}$</span><button onclick='buyVehicleShopItem(${shopId}, "` + shopItems[i].hash + `");' class='btn btn-success'><i class='fas fa-dollar-sign'></i></button></li>`;
+        }
+
+        $("#VehicleShopHUD-List").html(html);
+        $("#VehicleShopHUD").fadeTo(250, 1, function() {
+            $("#VehicleShopHUD").show();
+        });
+    }
+
+    function buyVehicleShopItem(shopId, stringifiedHash) {
+        if (shopId <= 0 || shopId == undefined || stringifiedHash == undefined || stringifiedHash.length <= 0) return;
+        closeVehicleShopCef();
+        alt.emit("Client:VehicleShop:buyVehicle", shopId, stringifiedHash);
+    }
+
+    // ShopHUD
+    let $buySelectedItem = undefined,
+        $buyShopId = undefined,
+        $shopManagerShopId = undefined;
+
+    function openShop(shopId, items) {
+        items = JSON.parse(items);
+        let html = "";
+
+        for (var i in items) {
+            html += "<li class='list-group-item' onclick='openBuyItemSelect(`" + items[i].itemName + "`);'><span>" + numberWithCommas(items[i].itemPrice) + "$</span><span class='price'>" + items[i].itemAmount + "x</span><img src='../utils/img/inv/" + items[i].itemPic + ".png' class='img-fluid'><p>" + items[i].itemName + "</p></li>";
+        }
+
+        $("#shopHUD-List").html(html);
+        $("#shopHUD-BuySelect").hide();
+        $("#shopHUD-BuySelect-Input").val("");
+        $buyShopId = shopId;
+        $("#shopHUD").fadeTo(250, 1, function() {
+            $("#shopHUD").show();
+        });
+    }
+
+    function transferShopManagerItem(from, itemName, htmlElem) {
+        var listitem = $(htmlElem).parent();
+        var listItemInput = $(listitem).find("input.item").val();
+        if (listitem == undefined || listItemInput == undefined || listItemInput <= 0) return;
+        switch (from) {
+            case "inventory":
+                alt.emit("Client:Shop:depositShopItem", $shopManagerShopId, itemName, listItemInput);
+                break;
+            case "shop":
+                alt.emit("Client:Shop:takeShopItem", $shopManagerShopId, itemName, listItemInput);
+                break;
+        }
+        closeShopManagerCef();
+    }
+
+    function setShopManagerItemPrice(itemName, htmlElem) {
+        var listitem = $(htmlElem).parent(),
+            listItemInput = $(listitem).find("input.price").val();
+        if (listitem == undefined || listItemInput == undefined || listItemInput <= 0) return;
+        alt.emit("Client:Shop:setItemPrice", $shopManagerShopId, itemName, listItemInput);
+        closeShopManagerCef();
+    }
+
+    function openShopManager(shopId, inventoryItems, shopItems) {
+        $shopManagerShopId = shopId;
+        inventoryItems = JSON.parse(inventoryItems);
+        shopItems = JSON.parse(shopItems);
+        let inventoryHTML = "",
+            shopItemsHTML = "";
+
+        for (var i in shopItems) {
+            shopItemsHTML += `<li class='list-group-item'><span>${shopItems[i].itemAmount}x</span><span class='price'>${numberWithCommas(shopItems[i].itemPrice)}$</span><img src='../utils/img/inv/${shopItems[i].itemPic}.png' class='img-fluid'><p>${shopItems[i].itemName}</p><button onclick='transferShopManagerItem("shop", "` + shopItems[i].itemName + `", this);' type='button' class='btn btn-success'><i class='fas fa-angle-double-left'></i></button><input class='item' type='number' placeholder='Anzahl'>` +
+                `<hr><button onclick='setShopManagerItemPrice("` + shopItems[i].itemName + `", this);' type='button' class='btn btn-success'><i class='fas fa-dollar-sign'></i></button><input class='price' type='number' placeholder='Preis'></li>`;
+        }
+
+        for (var i in inventoryItems) {
+            inventoryHTML += `<li class='list-group-item'><span>${inventoryItems[i].itemAmount}x</span><img src='../utils/img/inv/${inventoryItems[i].itemPic}.png' class='img-fluid'><p>${inventoryItems[i].itemName}</p><input class='item' type='number' placeholder='Anzahl'><button onclick='transferShopManagerItem("inventory", "` + inventoryItems[i].itemName + `", this);' type='button' class='btn btn-success'><i class='fas fa-angle-double-right'></i></button></li>`;
+        }
+
+        $("#shopManagerHUD-inventoryList").html(inventoryHTML);
+        $("#shopManagerHUD-shopList").html(shopItemsHTML);
+        $("#shopManagerHUD").fadeTo(250, 1, function() {
+            $("#shopManagerHUD").show();
+        });
+    }
+
+    function openBuyItemSelect(itemName) {
+        $buySelectedItem = itemName;
+        $("#shopHUD-BuySelect").fadeTo(1, 1, function() {
+            $("#shopHUD-BuySelect").show();
+        });
+    }
+
+    function buyShopItem() {
+        var selectedAmount = $("#shopHUD-BuySelect-Input").val();
+        if (selectedAmount <= 0 || selectedAmount == undefined || $buySelectedItem == undefined || $buyShopId == undefined || $buyShopId <= 0) return;
+        alt.emit("Client:Shop:buyItem", $buyShopId, $buySelectedItem, selectedAmount);
+        closeShopCef();
+    }
+
+    function closeShopManagerCef() {
+        alt.emit("Client:Shop:closeShop");
+        $("#shopManagerHUD").fadeTo(250, 0, function() {
+            $("#shopManagerHUD").hide();
+            $("#shopManagerHUD-inventoryList").html("");
+            $("#shopManagerHUD-shopList").html("");
+            $shopManagerShopId = undefined;
+        });
+    }
+
+    function closeShopCef() {
+        alt.emit("Client:Shop:closeShop");
+        $("#shopHUD-BuySelect").hide();
+        $("#shopHUD").fadeTo(250, 0, function() {
+            $("#shopHUD").hide();
+            $("#shopHUD-List").html("");
+            $buySelectedItem = undefined;
+        });
+    }
+
+    // Laptop
+    function updateApps(LSPDApp) {
+        if (LSPDApp) $("#Home-LSPDAppItem").show();
+        else $("#Home-LSPDAppItem").hide();
+    }
+
+    function showLaptop() {
+        $("#Laptop").fadeTo(1, 1, function() {
+            $("#Laptop").show();
+        });
+    }
+
+    function hideLaptop() {
+        $("#Laptop").fadeTo(1, 0, function() {
+            $("#Laptop").hide();
+        });
+    }
+
+    /* Helper */
+    function numberWithCommas(x) {
+        let numberwithComma = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return numberwithComma.replace(/,/g, '.');
+    }
+</script>
+<script type="text/javascript">
+    //Alt On Events
+    if ('alt' in window) {
+        //Laptop
+        alt.on("CEF:Laptop:showLaptop", showLaptop);
+        alt.on("CEF:Laptop:hideLaptop", hideLaptop);
+        alt.on("CEF:Laptop:updateApps", (LSPDApp) => {
+            updateApps(LSPDApp);
+        });
+
+
+
+        alt.on("CEF:HUD:sendNotification", (type, time, message) => {
+            ShowNotification(type, message, time);
+        });
+
+        alt.on("CEF:HUD:updateMoney", (money) => {
+            updateMoneyHUD(money);
+        });
+
+        //Interaktionsmenü
+        alt.on("CEF:Interaction:toggleInteractionMenu", (typ, state, array) => {
+            toggleInteractionMenu(typ, state, array);
+        });
+
+        alt.on("CEF:Interaction:requestAction", () => {
+            alt.emit("Client:Interaction:giveRequestedAction", $interactType, $interactAction);
+        });
+
+        //Garage
+        alt.on("CEF:Garage:openGarage", (garageId, garageVehs, outsideVehs) => {
+            openGarage(garageId, garageVehs, outsideVehs);
+        });
+
+        //Inventar
+        alt.on("CEF:Inventory:openInventory", (weight, maxWeight, invItems) => {
+            openInventory(weight, maxWeight, invItems);
+        });
+
+        alt.on("CEF:Inventory:closeInventory", () => {
+            closeInventory();
+        });
+
+        //Shop
+        alt.on("CEF:Shop:openShop", (shopId, items) => {
+            openShop(shopId, items);
+        });
+
+        alt.on("CEF:Shop:openShopManager", (shopId, inventoryItems, shopItems) => {
+            openShopManager(shopId, inventoryItems, shopItems);
+        });
+
+        //Vehicle Shop
+        alt.on("CEF:VehicleShop:openShop", (shopId, items) => {
+            openVehicleShop(shopId, items);
+        });
+
+        //ATM
+        alt.on("CEF:ATM:openATM", (money) => {
+            openATM(money);
+        });
+
+        //Tattoo Shop
+        alt.on("CEF:TattooShop:openShop", (shopId, ownTattoosJSON) => {
+            openTattooHUD(shopId, ownTattoosJSON);
+        });
+
+        alt.on("CEF:TattooShop:sendItemsToClient", (array) => {
+            SetTattooShopItems(array);
+        });
+
+        //Kleiderschrank
+        alt.on("CEF:ClothesStorage:openClothesStorageHUD", (gender) => openClothesStorageHUD(gender));
+
+        alt.on("CEF:ClothesStorage:sendItemsToClient", (json) => {
+            SetClothesStorageItems(json);
+        });
+
+        //Kleiderladen
+        alt.on("CEF:ClothesShop:openShop", (shopId) => {
+            SetClothesShopContent(shopId);
+        });
+
+        alt.on("CEF:ClothesShop:sendItemsToClient", (json) => {
+            SetClothesShopItems(json);
+        });
+
+        //Faction Manage
+        alt.on("CEF:FactionManage:openFactionManager", (factionId, memberJSON) => {
+            openFactionManager(factionId, memberJSON);
+        });
+
+        //Labor
+        alt.on("CEF:Labor:openLabor", (invItems, laborItems) => {
+            openLaborHud(invItems, laborItems);
+        });
+    }
+</script>
+
+</html>

@@ -1,0 +1,8 @@
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Release\netcoreapp3.1\MuchRP.deps.json
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Release\netcoreapp3.1\MuchRP.dll
+D:\GitLab space\muchrp\Mappe\MuchRP\bin\Release\netcoreapp3.1\MuchRP.pdb
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Release\netcoreapp3.1\MuchRP.csprojAssemblyReference.cache
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Release\netcoreapp3.1\MuchRP.AssemblyInfoInputs.cache
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Release\netcoreapp3.1\MuchRP.AssemblyInfo.cs
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Release\netcoreapp3.1\MuchRP.dll
+D:\GitLab space\muchrp\Mappe\MuchRP\obj\Release\netcoreapp3.1\MuchRP.pdb
